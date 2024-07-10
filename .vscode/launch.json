@@ -6,6 +6,15 @@
       "name": "Development server",
       "request": "launch",
       "type": "node-terminal"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Brave",
+      "runtimeExecutable": "/usr/bin/brave-browser",
+      "userDataDir": true,
+      "url": "http://localhost:5173/",
+      "webRoot": "${workspaceFolder}"
     }
   ]
 }

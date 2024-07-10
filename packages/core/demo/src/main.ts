@@ -1,16 +1,46 @@
-import './style.css'
-import { setupCounter } from './counter.ts'
+import './style.css';
+import { basicSetup } from 'codemirror';
+import { EditorView, keymap } from '@codemirror/view';
+import { markdown } from '@codemirror/lang-markdown';
+import { languages } from '@codemirror/language-data';
+import { hypermdPlugin, markdownExtensions } from '../../lib/main';
+import * as HyperMD from '../../lib/main';
+import { indentWithTab } from '@codemirror/commands';
+import { Strikethrough } from '@lezer/markdown';
+import { syntaxTree } from '@codemirror/language';
+import { printTree } from '@lezer-unofficial/printer';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
+    <h1>HyperMD Demo Page</h1>
+    <div id="codemirror-container"></div>
   </div>
-`
+`;
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+let editor = new EditorView({
+  extensions: [
+    basicSetup,
+    markdown({
+      codeLanguages: languages,
+      extensions: [markdownExtensions, Strikethrough],
+    }),
+    EditorView.lineWrapping,
+    hypermdPlugin,
+    keymap.of([
+      indentWithTab,
+      {
+        key: 'Alt-p',
+        run: (view) => {
+          console.log(
+            printTree(syntaxTree(view.state), view.state.doc.toString()),
+          );
+          return true;
+        },
+      },
+    ]),
+  ],
+  parent: document.getElementById('codemirror-container')!,
+});
+
+// for easier debugging
+Object.assign(window, { editor, HyperMD });
