@@ -6,7 +6,7 @@ import { languages } from '@codemirror/language-data';
 import { hypermdPlugin, markdownExtensions } from '../../lib/main';
 import * as HyperMD from '../../lib/main';
 import { indentWithTab } from '@codemirror/commands';
-import { Strikethrough } from '@lezer/markdown';
+import { GFM, Strikethrough } from '@lezer/markdown';
 import { syntaxTree } from '@codemirror/language';
 import { printTree } from '@lezer-unofficial/printer';
 
@@ -22,7 +22,7 @@ let editor = new EditorView({
     basicSetup,
     markdown({
       codeLanguages: languages,
-      extensions: [markdownExtensions, Strikethrough],
+      extensions: [GFM, markdownExtensions, Strikethrough],
     }),
     EditorView.lineWrapping,
     hypermdPlugin,

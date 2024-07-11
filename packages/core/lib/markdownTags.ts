@@ -5,4 +5,6 @@ export const markdownTags = {
   inlineCode: Tag.define(),
   linkURL: Tag.define(),
   escapeMark: Tag.define(),
+  emoji: Tag.define(),
+  emojiMark: Tag.define(),
 };

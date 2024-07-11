@@ -9,36 +9,16 @@ import {
   ViewPlugin,
   ViewUpdate,
 } from '@codemirror/view';
-import { EditorState, Range, RangeSet, RangeValue } from '@codemirror/state';
+import { Range } from '@codemirror/state';
 import { EditorView } from 'codemirror';
-import { Tag, styleTags, tags } from '@lezer/highlight';
-import { defaultHideSyntaxPlugin, escapeExtension } from './hide';
+import { styleTags, tags } from '@lezer/highlight';
+import {
+  defaultHidableSyntaxExtensions,
+  escapeMarkdownExtension,
+} from './hide';
 import { markdownTags } from './markdownTags';
-
-export interface RangeLike {
-  from: number;
-  to: number;
-}
-
-export function rangeTouchesRange<T extends RangeLike, V extends RangeLike>(
-  a: T,
-  b: V,
-) {
-  return a.from <= b.to && b.from <= a.to;
-}
-
-function rangeSetIncludes<V extends RangeValue>(
-  from: number,
-  to: number,
-  set: RangeSet<V>,
-) {
-  let touches = false;
-  set.between(from, to, () => {
-    touches = true;
-    return false;
-  });
-  return touches;
-}
+import { emojiMarkdownExtension } from './fold/emoji';
+import { defaultFoldableSyntaxExtensions } from './fold';
 
 function traverseTree(view: EditorView) {
   let widgets: Range<Decoration>[] = [];
@@ -47,43 +27,11 @@ function traverseTree(view: EditorView) {
       from,
       to,
       enter: (node) => {
-        if (
-          view.state.selection.ranges.some((range) =>
-            rangeTouchesRange(node, range),
-          )
-        ) {
-          console.log(node.name);
-        }
-
-        if (node.name === 'InlineCode') {
-          widgets.push(
-            Decoration.mark({ class: 'cm-inline-code' }).range(
-              node.from,
-              node.to,
-            ),
-          );
-        } else if (node.name.startsWith('ATXHeading')) {
-          if (
-            view.state.selection.ranges.some((range) =>
-              rangeTouchesRange(node, range),
-            )
-          ) {
-            return;
-          }
-
-          let headerMark = node.node.firstChild?.cursor()!;
-          console.assert(headerMark.name === 'HeaderMark');
-          widgets.push(
-            Decoration.mark({ class: 'cm-hidden-token' }).range(
-              headerMark.from,
-              Math.min(headerMark.to + 1, node.to),
-            ),
-          );
-        }
+        // let cursor = node.node.cursor();
       },
     });
   }
-  return Decoration.set(widgets);
+  return Decoration.set(widgets, true);
 }
 
 const traverseTreePlugin = ViewPlugin.fromClass(
@@ -109,8 +57,7 @@ const traverseTreePlugin = ViewPlugin.fromClass(
 
     eventHandlers: {
       mousedown: (e, view) => {
-        let target = e.target as HTMLElement;
-        // TODO: finish click handler
+        // let target = e.target as HTMLElement;
       },
     },
     // provide: (p) => [
@@ -154,7 +101,8 @@ export const markdownExtensions = [
       }),
     ],
   },
-  escapeExtension,
+  escapeMarkdownExtension,
+  emojiMarkdownExtension,
 ];
 
 const syntaxPlugin = syntaxHighlighting(
@@ -202,11 +150,17 @@ const syntaxPlugin = syntaxHighlighting(
       tag: markdownTags.escapeMark,
       color: 'grey',
     },
+    {
+      tag: tags.comment,
+      color: 'grey',
+    },
   ]),
 );
 
 export const hypermdPlugin = [
   themePlugin,
   syntaxPlugin,
-  defaultHideSyntaxPlugin,
+  defaultHidableSyntaxExtensions,
+  defaultFoldableSyntaxExtensions,
+  traverseTreePlugin,
 ];
