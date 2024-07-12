@@ -9,7 +9,7 @@ import {
   ViewPlugin,
   ViewUpdate,
 } from '@codemirror/view';
-import { Range } from '@codemirror/state';
+import { EditorState, Range } from '@codemirror/state';
 import { EditorView } from 'codemirror';
 import { styleTags, tags } from '@lezer/highlight';
 import {
@@ -57,12 +57,13 @@ const traverseTreePlugin = ViewPlugin.fromClass(
 
     eventHandlers: {
       mousedown: (e, view) => {
-        // let target = e.target as HTMLElement;
+        let target = e.target as HTMLElement;
+        // console.log(target);
       },
     },
     // provide: (p) => [
     //   EditorState.changeFilter.of((tr) => {
-    //     console.log(tr.selection);
+    //     if (tr.selection) console.log(tr.selection.ranges[0]);
     //     return true;
     //   }),
     // ],
@@ -86,6 +87,9 @@ const themePlugin = EditorView.theme({
   '.cm-rendered-link': {
     textDecoration: 'underline',
   },
+  '.cm-list-mark': {
+    color: 'grey',
+  },
 });
 
 export const markdownExtensions = [
@@ -98,6 +102,7 @@ export const markdownExtensions = [
         HeaderMark: markdownTags.headerMark,
         InlineCode: markdownTags.inlineCode,
         URL: markdownTags.linkURL,
+        ListMark: markdownTags.listMark,
       }),
     ],
   },
@@ -153,6 +158,10 @@ const syntaxPlugin = syntaxHighlighting(
     {
       tag: tags.comment,
       color: 'grey',
+    },
+    {
+      tag: markdownTags.listMark,
+      class: 'cm-list-mark',
     },
   ]),
 );

@@ -7,4 +7,5 @@ export const markdownTags = {
   escapeMark: Tag.define(),
   emoji: Tag.define(),
   emojiMark: Tag.define(),
+  listMark: Tag.define(),
 };

@@ -4,7 +4,7 @@ import { foldableSyntaxFacet } from './core';
 class BulletPoint extends WidgetType {
   toDOM() {
     let span = document.createElement('span');
-    span.className = 'cm-bullet-point';
+    span.className = 'cm-bullet-point cm-list-mark';
     span.innerHTML = '•';
     return span;
   }
