@@ -5,7 +5,7 @@ import {
   DecorationSet,
   EditorView,
 } from '@codemirror/view';
-import { RangeLike, justPluginSpec, selectionTouchesRange } from '../utils';
+import { RangeLike, selectionTouchesRange } from '../utils';
 import { SyntaxNodeRef } from '@lezer/common';
 import { syntaxTree } from '@codemirror/language';
 
@@ -82,6 +82,7 @@ export const foldDecorationExtension = StateField.define<DecorationSet>({
 
 export const foldExtension = [
   foldDecorationExtension,
+  // Print clicked on decoration
   // justPluginSpec({
   //   eventHandlers: {
   //     mousedown: (e, view) => {

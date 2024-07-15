@@ -2,7 +2,6 @@ import { Decoration, EditorView, WidgetType } from '@codemirror/view';
 import { foldDecorationExtension, foldableSyntaxFacet } from './core';
 import { EditorSelection } from '@codemirror/state';
 import { eventHandlersWithClass, justPluginSpec } from '../utils';
-import { BlockContext, Line, MarkdownConfig } from '@lezer/markdown';
 
 class HTMLWidget extends WidgetType {
   constructor(public value: string) {
@@ -27,7 +26,7 @@ class HTMLWidget extends WidgetType {
   // }
 
   // allows clicks to pass through to the editor
-  ignoreEvent(event: Event) {
+  ignoreEvent(_event: Event) {
     return false;
     // return event.type !== 'mousedown'; // don't preventDefault for mousedown
   }

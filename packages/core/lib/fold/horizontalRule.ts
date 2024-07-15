@@ -8,7 +8,7 @@ class HorizontalRuleWidget extends WidgetType {
     return hr;
   }
 
-  ignoreEvent(event: Event) {
+  ignoreEvent(_event: Event) {
     return false;
   }
 }

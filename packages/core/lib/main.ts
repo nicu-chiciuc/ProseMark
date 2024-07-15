@@ -9,7 +9,7 @@ import {
   ViewPlugin,
   ViewUpdate,
 } from '@codemirror/view';
-import { EditorState, Range } from '@codemirror/state';
+import { Range } from '@codemirror/state';
 import { EditorView } from 'codemirror';
 import { styleTags, tags } from '@lezer/highlight';
 import {
@@ -26,7 +26,7 @@ function traverseTree(view: EditorView) {
     syntaxTree(view.state).iterate({
       from,
       to,
-      enter: (node) => {
+      enter: (_node) => {
         // let cursor = node.node.cursor();
       },
     });
@@ -55,12 +55,12 @@ const traverseTreePlugin = ViewPlugin.fromClass(
   {
     decorations: (v) => v.decorations,
 
-    eventHandlers: {
-      mousedown: (e, view) => {
-        let target = e.target as HTMLElement;
-        // console.log(target);
-      },
-    },
+    // eventHandlers: {
+    //   mousedown: (e, view) => {
+    //     let target = e.target as HTMLElement;
+    //     // console.log(target);
+    //   },
+    // },
     // provide: (p) => [
     //   EditorState.changeFilter.of((tr) => {
     //     if (tr.selection) console.log(tr.selection.ranges[0]);
