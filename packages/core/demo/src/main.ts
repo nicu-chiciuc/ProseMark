@@ -39,6 +39,7 @@ let editor = new EditorView({
       },
     ]),
   ],
+  doc: '<div>Hello World</div>\n\n',
   parent: document.getElementById('codemirror-container')!,
 });
 

@@ -1,11 +1,11 @@
 import { EditorState, StateField, Range, Facet } from '@codemirror/state';
 import {
+  DOMEventHandlers,
   Decoration,
   DecorationSet,
   EditorView,
-  ViewPlugin,
 } from '@codemirror/view';
-import { RangeLike, selectionTouchesRange } from '../utils';
+import { RangeLike, justPluginSpec, selectionTouchesRange } from '../utils';
 import { SyntaxNodeRef } from '@lezer/common';
 import { syntaxTree } from '@codemirror/language';
 
@@ -66,7 +66,7 @@ const buildDecorations = (state: EditorState) => {
   return Decoration.set(decorations, true);
 };
 
-const foldExtension = StateField.define<DecorationSet>({
+export const foldDecorationExtension = StateField.define<DecorationSet>({
   create(state) {
     return buildDecorations(state);
   },
@@ -80,25 +80,23 @@ const foldExtension = StateField.define<DecorationSet>({
   provide: (f) => [EditorView.decorations.from(f)],
 });
 
-const foldEventsExtension: ViewPlugin<{}> = ViewPlugin.define(() => ({}), {
-  eventHandlers: {
-    mousedown: (e, view) => {
-      let target = e.target as HTMLElement;
-      const specs = view.state.facet(foldableSyntaxFacet);
-      let res = [];
-      for (const spec of specs) {
-        if (spec.mousedown) {
-          for (const className in spec.mousedown) {
-            if (target.classList.contains(className)) {
-              res.push(spec.mousedown[className](e, view));
-            }
-          }
-        }
-      }
-      return res.some((res) => !!res);
-    },
-  },
-});
+export const foldExtension = [
+  foldDecorationExtension,
+  // justPluginSpec({
+  //   eventHandlers: {
+  //     mousedown: (e, view) => {
+  //       const target = e.target as HTMLElement;
+  //       const pos = view.posAtDOM(target);
+  //       view.state
+  //         .field(foldDecorationExtension)
+  //         .between(pos, pos, (from, to, decoration) => {
+  //           console.log(decoration.spec.widget);
+  //         });
+  //       return false;
+  //     },
+  //   },
+  // }),
+];
 
 export type FoldableSyntaxSpec = {
   nodePath: string | string[] | ((nodeName: string) => boolean);
@@ -107,9 +105,7 @@ export type FoldableSyntaxSpec = {
     node: SyntaxNodeRef,
   ) => Range<Decoration> | Range<Decoration>[] | void;
   unfoldZone?: (state: EditorState, node: SyntaxNodeRef) => RangeLike;
-  mousedown?: {
-    [className: string]: (ev: MouseEvent, view: EditorView) => boolean | void;
-  };
+  eventHandlers?: DOMEventHandlers<{}>;
 };
 
 export const foldableSyntaxFacet = Facet.define<
@@ -119,5 +115,5 @@ export const foldableSyntaxFacet = Facet.define<
   combine(value: readonly FoldableSyntaxSpec[]) {
     return [...value];
   },
-  enables: [foldExtension, foldEventsExtension],
+  enables: foldExtension,
 });

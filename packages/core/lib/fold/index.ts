@@ -1,6 +1,7 @@
 import { bulletListExtension } from './bulletList';
 import { emojiExtension } from './emoji';
-import { htmlBlockExtension } from './htmlBlock';
+import { horizonalRuleExtension } from './horizontalRule';
+import { htmlBlockExtension } from './html';
 import { imageExtension } from './image';
 import { taskExtension } from './task';
 
@@ -10,4 +11,5 @@ export const defaultFoldableSyntaxExtensions = [
   imageExtension,
   emojiExtension,
   htmlBlockExtension,
+  horizonalRuleExtension,
 ];

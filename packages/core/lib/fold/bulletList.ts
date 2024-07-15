@@ -8,6 +8,10 @@ class BulletPoint extends WidgetType {
     span.innerHTML = '•';
     return span;
   }
+
+  ignoreEvent(_event: Event) {
+    return false;
+  }
 }
 
 export const bulletListExtension = foldableSyntaxFacet.of({
