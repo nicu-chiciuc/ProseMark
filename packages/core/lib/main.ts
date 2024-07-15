@@ -92,7 +92,7 @@ const themePlugin = EditorView.theme({
   },
 });
 
-export const markdownExtensions = [
+export const hypermdMarkdownExtensions = [
   {
     // Define new nodes with tags here
     defineNodes: [],
@@ -166,7 +166,7 @@ const syntaxPlugin = syntaxHighlighting(
   ]),
 );
 
-export const hypermdPlugin = [
+export const hypermdExtensions = [
   themePlugin,
   syntaxPlugin,
   defaultHidableSyntaxExtensions,

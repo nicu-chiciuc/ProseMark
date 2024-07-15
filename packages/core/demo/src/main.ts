@@ -3,7 +3,7 @@ import { basicSetup } from 'codemirror';
 import { EditorView, keymap } from '@codemirror/view';
 import { markdown } from '@codemirror/lang-markdown';
 import { languages } from '@codemirror/language-data';
-import { hypermdPlugin, markdownExtensions } from '../../lib/main';
+import { hypermdExtensions, hypermdMarkdownExtensions } from '../../lib/main';
 import * as HyperMD from '../../lib/main';
 import { indentWithTab } from '@codemirror/commands';
 import { GFM } from '@lezer/markdown';
@@ -22,10 +22,10 @@ let editor = new EditorView({
     basicSetup,
     markdown({
       codeLanguages: languages,
-      extensions: [GFM, markdownExtensions],
+      extensions: [GFM, hypermdMarkdownExtensions],
     }),
     EditorView.lineWrapping,
-    hypermdPlugin,
+    hypermdExtensions,
     keymap.of([
       indentWithTab,
       {
