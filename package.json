@@ -4,5 +4,9 @@
   "workspaces": [
     "packages/*",
     "docs"
-  ]
+  ],
+  "devDependencies": {
+    "pkg-pr-new": "^0.0.39"
+  },
+  "packageManager": "pnpm@10.0.0"
 }
