@@ -21,6 +21,6 @@ jobs:
         run: pnpm install
 
       - name: Build
-        run: cd packages/core && pnpm build
+        run: pushd packages/core && pnpm build && popd
 
       - run: pnpx pkg-pr-new publish "./packages/*"
