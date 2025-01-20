@@ -20,5 +20,16 @@ export default defineConfig({
       // the proper extensions will be added
       fileName: (format, entryName) => `${entryName}.${format}.js`,
     },
+    rollupOptions: {
+      external: [
+        '@codemirror/state',
+        '@codemirror/view',
+        '@codemirror/commands',
+        '@codemirror/language',
+        '@codemirror/lang-markdown',
+        '@codemirror/language-data',
+        '@lezer/highlight',
+      ],
+    },
   },
 });
