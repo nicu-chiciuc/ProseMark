@@ -9,7 +9,7 @@ class HTMLWidget extends WidgetType {
   }
 
   toDOM() {
-    let el = document.createElement('div');
+    const el = document.createElement('div');
     el.className = 'cm-html-widget';
     el.innerHTML = this.value;
     return el;
@@ -103,7 +103,7 @@ class HTMLWidget extends WidgetType {
 //   parseInline: [
 //     {
 //       name: 'HTMLTag2',
-//       parse: (cx, next, pos) => {
+//       parse: (cx: InlineContext, next: number, pos: number): number => {
 //         if (next != 60 /* '<' */ || pos == cx.end - 1) return -1;
 //         let after = cx.slice(pos + 1, cx.end);
 //         let url =
@@ -170,6 +170,7 @@ export const htmlBlockExtension = [
           // (selection by mouse would overshoot the widget content range)
 
           const ranges = view.state.selection.ranges;
+          // @ts-expect-error If ranges is empty, || will short-circuit.
           if (ranges.length === 0 || ranges[0].anchor !== ranges[0].head)
             return;
 
@@ -177,7 +178,7 @@ export const htmlBlockExtension = [
           const pos = view.posAtDOM(target);
 
           const decorations = view.state.field(foldDecorationExtension);
-          decorations.between(pos, pos, (from, to, _decoration) => {
+          decorations.between(pos, pos, (from, to) => {
             setTimeout(() => {
               view.dispatch({
                 selection: EditorSelection.single(to, from),

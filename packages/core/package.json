@@ -5,27 +5,20 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/main.umd.js",
-  "module": "./dist/main.es.js",
+  "main": "./dist/main.mjs",
+  "module": "./dist/main.mjs",
   "exports": {
     ".": {
       "types": "./dist/main.d.ts",
-      "import": "./dist/main.es.js",
-      "require": "./dist/main.umd.js"
+      "import": "./dist/main.mjs"
     }
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "@lezer-unofficial/printer": "^1.0.1",
-    "@typescript-eslint/eslint-plugin": "^7.15.0",
-    "codemirror": "^6.0.1",
-    "typescript": "^5.2.2",
-    "vite": "^5.3.1",
-    "vite-plugin-dts": "^3.9.1"
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint --max-warnings=0",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@lezer/common": "=1.2.2",
@@ -40,5 +33,25 @@
     "@codemirror/state": "^6.4.1",
     "@codemirror/view": "^6.28.4",
     "@lezer/highlight": "^1.2.0"
+  },
+  "devDependencies": {
+    "@codemirror/commands": "^6.8.0",
+    "@codemirror/lang-markdown": "^6.3.2",
+    "@codemirror/language": "^6.10.8",
+    "@codemirror/language-data": "^6.5.1",
+    "@codemirror/state": "^6.5.1",
+    "@codemirror/view": "^6.36.2",
+    "@eslint/js": "^9.18.0",
+    "@lezer-unofficial/printer": "^1.0.1",
+    "@lezer/highlight": "^1.2.1",
+    "@types/node": "^22.10.7",
+    "codemirror": "^6.0.1",
+    "eslint": "^9.18.0",
+    "jiti": "^2.4.2",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.21.0",
+    "vite": "^6.0.10",
+    "vite-plugin-dts": "^4.5.0",
+    "vite-plugin-externalize-deps": "^0.9.0"
   }
 }

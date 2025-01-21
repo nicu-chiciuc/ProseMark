@@ -29,5 +29,7 @@
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  } // required to format on save
+  }, // required to format on save
+
+  "eslint.workingDirectories": ["packages/core"]
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import './style.css';
 import { basicSetup } from 'codemirror';
 import { EditorView, keymap } from '@codemirror/view';
@@ -17,7 +18,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   </div>
 `;
 
-let editor = new EditorView({
+const editor = new EditorView({
   extensions: [
     basicSetup,
     markdown({

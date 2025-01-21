@@ -3,7 +3,7 @@ import { foldableSyntaxFacet } from './core';
 
 class BulletPoint extends WidgetType {
   toDOM() {
-    let span = document.createElement('span');
+    const span = document.createElement('span');
     span.className = 'cm-bullet-point cm-list-mark';
     span.innerHTML = '•';
     return span;
@@ -17,7 +17,7 @@ class BulletPoint extends WidgetType {
 export const bulletListExtension = foldableSyntaxFacet.of({
   nodePath: 'BulletList/ListItem/ListMark',
   onFold: (_state, node) => {
-    let cursor = node.node.cursor();
+    const cursor = node.node.cursor();
     if (cursor.nextSibling() && cursor.name === 'Task') return;
 
     return Decoration.replace({ widget: new BulletPoint() }).range(

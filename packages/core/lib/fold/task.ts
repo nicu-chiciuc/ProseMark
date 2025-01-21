@@ -11,14 +11,14 @@ class Checkbox extends WidgetType {
   }
 
   toDOM() {
-    let el = document.createElement('input');
+    const el = document.createElement('input');
     el.type = 'checkbox';
     el.className = 'cm-checkbox';
     el.checked = this.value;
     return el;
   }
 
-  ignoreEvent() {
+  ignoreEvent(_event: Event) {
     return false;
   }
 }

@@ -5,11 +5,11 @@ import {
 } from '@codemirror/language';
 import {
   Decoration,
-  DecorationSet,
+  type DecorationSet,
   ViewPlugin,
-  ViewUpdate,
+  type ViewUpdate,
 } from '@codemirror/view';
-import { Range } from '@codemirror/state';
+import { type Range } from '@codemirror/state';
 import { EditorView } from 'codemirror';
 import { styleTags, tags } from '@lezer/highlight';
 import {
@@ -21,8 +21,8 @@ import { emojiMarkdownExtension } from './fold/emoji';
 import { defaultFoldableSyntaxExtensions } from './fold';
 
 function traverseTree(view: EditorView) {
-  let widgets: Range<Decoration>[] = [];
-  for (let { from, to } of view.visibleRanges) {
+  const widgets: Range<Decoration>[] = [];
+  for (const { from, to } of view.visibleRanges) {
     syntaxTree(view.state).iterate({
       from,
       to,

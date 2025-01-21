@@ -1,4 +1,4 @@
-import { MarkdownConfig } from '@lezer/markdown';
+import type { InlineContext, MarkdownConfig } from '@lezer/markdown';
 import { markdownTags } from '../markdownTags';
 import { Decoration, WidgetType } from '@codemirror/view';
 import { foldableSyntaxFacet } from './core';
@@ -20,7 +20,7 @@ export const emojiMarkdownExtension: MarkdownConfig = {
   parseInline: [
     {
       name: 'Emoji',
-      parse: (cx, next, pos) => {
+      parse: (cx: InlineContext, next: number, pos: number): number => {
         if (next !== 58 /* : */) return -1;
 
         const open = /^\w+:/.test(cx.slice(pos + 1, cx.end));
@@ -43,7 +43,7 @@ class EmojiWidget extends WidgetType {
   }
 
   toDOM() {
-    let span = document.createElement('span');
+    const span = document.createElement('span');
     span.className = 'cm-emoji';
     span.innerHTML = this.emoji;
     return span;
