@@ -1,17 +1,18 @@
 import {
   CharCategory,
   EditorSelection,
-  EditorState,
-  SelectionRange,
+  type EditorState,
+  type SelectionRange,
   findClusterBreak,
 } from '@codemirror/state';
 import {
-  DOMEventHandlers,
-  DOMEventMap,
-  PluginSpec,
+  type DOMEventHandlers,
+  type DOMEventMap,
+  type PluginSpec,
   ViewPlugin,
+  type PluginValue,
 } from '@codemirror/view';
-import { TreeCursor } from '@lezer/common';
+import type { TreeCursor } from '@lezer/common';
 import { EditorView } from 'codemirror';
 
 /* This is a reference to vim's WORD: a "word" including any non-whitespace character */
@@ -19,17 +20,17 @@ export function stateWORDAt(
   state: EditorState,
   pos: number,
 ): SelectionRange | null {
-  let { text, from, length } = state.doc.lineAt(pos);
-  let cat = state.charCategorizer(pos);
+  const { text, from, length } = state.doc.lineAt(pos);
+  const cat = state.charCategorizer(pos);
   let start = pos - from,
     end = pos - from;
   while (start > 0) {
-    let prev = findClusterBreak(text, start, false);
+    const prev = findClusterBreak(text, start, false);
     if (cat(text.slice(prev, start)) === CharCategory.Space) break;
     start = prev;
   }
   while (end < length) {
-    let next = findClusterBreak(text, end);
+    const next = findClusterBreak(text, end);
     if (cat(text.slice(end, next)) === CharCategory.Space) break;
     end = next;
   }
@@ -41,17 +42,14 @@ export interface RangeLike {
   to: number;
 }
 
-export function rangeTouchesRange<T extends RangeLike, V extends RangeLike>(
-  a: T,
-  b: V,
-) {
+export function rangeTouchesRange(a: RangeLike, b: RangeLike): boolean {
   return a.from <= b.to && b.from <= a.to;
 }
 
-export function selectionTouchesRange<V extends RangeLike>(
+export function selectionTouchesRange(
   selection: readonly SelectionRange[],
-  b: V,
-) {
+  b: RangeLike,
+): boolean {
   return selection.some((range) => rangeTouchesRange(range, b));
 }
 
@@ -70,8 +68,8 @@ export function selectionTouchesRange<V extends RangeLike>(
 
 export function iterChildren(
   cursor: TreeCursor,
-  enter: (cursor: TreeCursor) => void | boolean,
-) {
+  enter: (cursor: TreeCursor) => undefined | boolean,
+): void {
   if (!cursor.firstChild()) return;
   do {
     if (enter(cursor)) break;
@@ -79,14 +77,14 @@ export function iterChildren(
   console.assert(cursor.parent());
 }
 
-export function justPluginSpec(spec: PluginSpec<{}>) {
+export function justPluginSpec(
+  spec: PluginSpec<PluginValue>,
+): ViewPlugin<PluginValue> {
   return ViewPlugin.define(() => ({}), spec);
 }
 
 export type ClassBasedEventHandlers<This> = {
-  [event in keyof DOMEventMap]?: {
-    [className: string]: DOMEventHandlers<This>[event];
-  };
+  [event in keyof DOMEventMap]?: Record<string, DOMEventHandlers<This>[event]>;
 };
 
 export function eventHandlersWithClass<This>(
@@ -97,17 +95,16 @@ export function eventHandlersWithClass<This>(
       .filter(([_event, handlers]) => !!handlers)
       .map(([event, handlers]) => [
         event,
-        function (this: This, ev: any, view: EditorView) {
-          let res = [];
+        function (this: This, ev: Event, view: EditorView) {
+          const res = [];
           for (const className in handlers) {
             if (
               ev
                 .composedPath()
-                .some((el: any) =>
-                  (el as HTMLElement).classList?.contains(className),
-                )
+                .some((el) => (el as HTMLElement).classList.contains(className))
             ) {
-              res.push(handlers[className]?.call(this, ev, view));
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              res.push(handlers[className]?.call(this, ev as any, view));
             }
           }
           return res.some((res) => !!res);

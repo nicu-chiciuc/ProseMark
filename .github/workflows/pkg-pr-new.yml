@@ -21,6 +21,6 @@ jobs:
         run: pnpm install
 
       - name: Build
-        run: pushd packages/core && pnpm build && popd
+        run: pnpm --filter="hypermd" build
 
-      - run: pnpx pkg-pr-new publish packages/*
+      - run: pnpx pkg-pr-new publish 'packages/*'

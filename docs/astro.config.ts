@@ -1,9 +1,6 @@
-import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
 import tailwind from '@astrojs/tailwind';
+import { defineConfig } from 'astro/config';
 import starlightTypeDoc, { typeDocSidebarGroup } from 'starlight-typedoc';
 
 // https://astro.build/config
@@ -16,6 +13,7 @@ export default defineConfig({
       social: {
         github: 'https://github.com/jsimonrichard/HyperMD',
       },
+
       plugins: [
         starlightTypeDoc({
           entryPoints: ['../packages/core/lib/main.ts'],
@@ -48,10 +46,15 @@ export default defineConfig({
       editLink: {
         baseUrl:
           process.env.NODE_ENV === 'development'
-            ? `vscode://file/${path.dirname(fileURLToPath(import.meta.url))}`
-            : 'https://github.com/tauri-apps/tauri-docs/edit/v2',
+            ? `vscode://file/${import.meta.dirname}`
+            : 'https://github.com/jsimonrichard/HyperMD/edit/main',
+      },
+      customCss: ['./src/tailwind.css'],
+
+      components: {
+        Head: './src/components/starlight/Head.astro',
       },
     }),
-    tailwind(),
+    tailwind({ applyBaseStyles: false }),
   ],
 });

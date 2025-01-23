@@ -1,10 +1,10 @@
 import { Decoration } from '@codemirror/view';
 import {
-  HidableSyntaxSpec,
+  type HidableSyntaxSpec,
   hidableSyntaxFacet,
   hideInlineDecoration,
 } from './core';
-import { MarkdownConfig } from '@lezer/markdown';
+import type { InlineContext, MarkdownConfig } from '@lezer/markdown';
 import { markdownTags } from '../markdownTags';
 import { stateWORDAt } from '../utils';
 
@@ -16,6 +16,7 @@ const defaultHidableSpecs: HidableSyntaxSpec[] = [
   {
     nodeName: (name) => name.startsWith('ATXHeading'),
     onHide: (_view, node) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const headerMark = node.node.firstChild!;
       return hideInlineDecoration.range(
         headerMark.from,
@@ -80,7 +81,7 @@ export const escapeMarkdownExtension: MarkdownConfig = {
   parseInline: [
     {
       name: 'EscapeMark',
-      parse: (cx, next, pos) => {
+      parse: (cx: InlineContext, next: number, pos: number): number => {
         if (next !== 92 /* \ */) return -1;
         return cx.addElement(
           cx.elt('Escape', pos, pos + 2, [cx.elt('EscapeMark', pos, pos + 1)]),

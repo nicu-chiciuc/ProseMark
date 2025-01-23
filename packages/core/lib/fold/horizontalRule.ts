@@ -3,7 +3,7 @@ import { foldableSyntaxFacet } from './core';
 
 class HorizontalRuleWidget extends WidgetType {
   toDOM() {
-    let hr = document.createElement('hr');
+    const hr = document.createElement('hr');
     hr.className = 'cm-horizontal-rule';
     return hr;
   }

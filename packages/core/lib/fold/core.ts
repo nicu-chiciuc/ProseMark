@@ -1,12 +1,17 @@
-import { EditorState, StateField, Range, Facet } from '@codemirror/state';
 import {
-  DOMEventHandlers,
+  type EditorState,
+  StateField,
+  type Range,
+  Facet,
+} from '@codemirror/state';
+import {
+  type DOMEventHandlers,
   Decoration,
-  DecorationSet,
+  type DecorationSet,
   EditorView,
 } from '@codemirror/view';
-import { RangeLike, selectionTouchesRange } from '../utils';
-import { SyntaxNodeRef } from '@lezer/common';
+import { type RangeLike, selectionTouchesRange } from '../utils';
+import type { SyntaxNodeRef } from '@lezer/common';
 import { syntaxTree } from '@codemirror/language';
 
 const buildDecorations = (state: EditorState) => {
@@ -99,15 +104,15 @@ export const foldExtension = [
   // }),
 ];
 
-export type FoldableSyntaxSpec = {
+export interface FoldableSyntaxSpec {
   nodePath: string | string[] | ((nodeName: string) => boolean);
   onFold?: (
     state: EditorState,
     node: SyntaxNodeRef,
-  ) => Range<Decoration> | Range<Decoration>[] | void;
+  ) => Range<Decoration> | Range<Decoration>[] | undefined;
   unfoldZone?: (state: EditorState, node: SyntaxNodeRef) => RangeLike;
-  eventHandlers?: DOMEventHandlers<{}>;
-};
+  eventHandlers?: DOMEventHandlers<void>;
+}
 
 export const foldableSyntaxFacet = Facet.define<
   FoldableSyntaxSpec,

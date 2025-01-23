@@ -1,8 +1,13 @@
-import { Decoration, DecorationSet, EditorView } from '@codemirror/view';
-import { EditorState, Facet, Range, StateField } from '@codemirror/state';
+import { Decoration, type DecorationSet, EditorView } from '@codemirror/view';
+import {
+  type EditorState,
+  Facet,
+  type Range,
+  StateField,
+} from '@codemirror/state';
 import { syntaxTree } from '@codemirror/language';
-import { SyntaxNodeRef } from '@lezer/common';
-import { RangeLike, rangeTouchesRange } from '../utils';
+import type { SyntaxNodeRef } from '@lezer/common';
+import { type RangeLike, rangeTouchesRange } from '../utils';
 
 const hideTheme = EditorView.theme({
   '.cm-hidden-token': {
@@ -18,7 +23,7 @@ export const hideBlockDecoration = Decoration.replace({
 });
 
 const buildDecorations = (state: EditorState) => {
-  let decorations: Range<Decoration>[] = [];
+  const decorations: Range<Decoration>[] = [];
   const specs = state.facet(hidableSyntaxFacet);
   syntaxTree(state).iterate({
     enter: (node) => {
@@ -72,7 +77,7 @@ const buildDecorations = (state: EditorState) => {
             names = spec.subNodeNameToHide;
           }
 
-          let cursor = node.node.cursor();
+          const cursor = node.node.cursor();
           console.assert(cursor.firstChild(), 'A hide node must have children');
           cursor.iterate((node) => {
             if (names.includes(node.type.name)) {
@@ -105,16 +110,16 @@ const hideExtension = StateField.define<DecorationSet>({
   provide: (f) => [EditorView.decorations.from(f), hideTheme],
 });
 
-export type HidableSyntaxSpec = {
+export interface HidableSyntaxSpec {
   nodeName: string | string[] | ((nodeName: string) => boolean);
   subNodeNameToHide?: string | string[];
   onHide?: (
     state: EditorState,
     node: SyntaxNodeRef,
-  ) => Range<Decoration> | Range<Decoration>[] | void;
+  ) => Range<Decoration> | Range<Decoration>[] | undefined;
   block?: boolean;
   unhideZone?: (state: EditorState, node: SyntaxNodeRef) => RangeLike;
-};
+}
 
 export const hidableSyntaxFacet = Facet.define<
   HidableSyntaxSpec,
