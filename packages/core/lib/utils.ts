@@ -99,9 +99,11 @@ export function eventHandlersWithClass<This>(
           const res = [];
           for (const className in handlers) {
             if (
-              ev
-                .composedPath()
-                .some((el) => (el as HTMLElement).classList.contains(className))
+              ev.composedPath().some((el) => {
+                if (!(el instanceof Element)) return false;
+
+                return el.classList.contains(className);
+              })
             ) {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               res.push(handlers[className]?.call(this, ev as any, view));
