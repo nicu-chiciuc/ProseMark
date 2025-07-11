@@ -11,16 +11,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - uses: pnpm/action-setup@v4
+      - uses: oven-sh/setup-bun@v2
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
+        run: bun install
 
       - name: Build
-        run: pnpm --filter="hypermd" build
+        run: bun --filter="hypermd" build
 
-      - run: pnpx pkg-pr-new publish 'packages/*'
+      - run: bunx pkg-pr-new publish 'packages/*'
