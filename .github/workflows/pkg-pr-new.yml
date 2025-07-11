@@ -20,6 +20,6 @@ jobs:
         run: bun install
 
       - name: Build
-        run: bun --filter="hypermd" build
+        run: bun --filter="hypermd" run build
 
       - run: bunx pkg-pr-new publish 'packages/*'
