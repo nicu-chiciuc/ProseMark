@@ -1,6 +1,5 @@
-import starlight from '@astrojs/starlight';
-import tailwind from '@astrojs/tailwind';
 import { defineConfig } from 'astro/config';
+import starlight from '@astrojs/starlight';
 import starlightTypeDoc, { typeDocSidebarGroup } from 'starlight-typedoc';
 
 // https://astro.build/config
@@ -9,38 +8,41 @@ export default defineConfig({
   base: 'HyperMD',
   integrations: [
     starlight({
-      title: 'HyperMD',
-      social: {
-        github: 'https://github.com/jsimonrichard/HyperMD',
-      },
-
-      plugins: [
-        starlightTypeDoc({
-          entryPoints: ['../packages/core/lib/main.ts'],
-          tsconfig: '../packages/core/tsconfig.json',
-          typeDoc: {
-            githubPages: true,
-          },
-        }),
+      title: 'HyperMD Docs',
+      social: [
+        {
+          icon: 'github',
+          label: 'GitHub',
+          href: 'https://github.com/withastro/starlight',
+        },
       ],
       sidebar: [
         {
           label: 'Guides',
           items: [
             // Each item here is one entry in the navigation menu.
-            {
-              label: 'Example Guide',
-              slug: 'guides/example',
-            },
+            { label: 'Example Guide', slug: 'guides/example' },
           ],
         },
         {
           label: 'Reference',
-          autogenerate: {
-            directory: 'reference',
-          },
+          autogenerate: { directory: 'reference' },
         },
         typeDocSidebarGroup,
+      ],
+      plugins: [
+        // Generate the documentation.
+        starlightTypeDoc({
+          entryPoints: ['../packages/core/lib/main.ts'],
+          tsconfig: '../packages/core/tsconfig.json',
+          typeDoc: {
+            githubPages: false,
+            // disableGit: true, // needed when running jujutsu locally
+            // sourceLinkExternal: true,
+            // sourceLinkTemplate:
+            //   'https://github.com/jsimonrichard/HyperMD/blob/main/packages/core/lib/{path}#L{line}',
+          },
+        }),
       ],
 
       editLink: {
@@ -49,12 +51,6 @@ export default defineConfig({
             ? `vscode://file/${import.meta.dirname}`
             : 'https://github.com/jsimonrichard/HyperMD/edit/main',
       },
-      customCss: ['./src/tailwind.css'],
-
-      components: {
-        Head: './src/components/starlight/Head.astro',
-      },
     }),
-    tailwind({ applyBaseStyles: false }),
   ],
 });
