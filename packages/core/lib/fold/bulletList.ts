@@ -1,11 +1,11 @@
-import { Decoration, WidgetType } from '@codemirror/view';
-import { foldableSyntaxFacet } from './core';
+import { Decoration, WidgetType } from "@codemirror/view";
+import { foldableSyntaxFacet } from "./core";
 
 class BulletPoint extends WidgetType {
   toDOM() {
-    const span = document.createElement('span');
-    span.className = 'cm-bullet-point cm-list-mark';
-    span.innerHTML = '•';
+    const span = document.createElement("span");
+    span.className = "cm-bullet-point cm-list-mark";
+    span.innerHTML = "•";
     return span;
   }
 
@@ -15,14 +15,14 @@ class BulletPoint extends WidgetType {
 }
 
 export const bulletListExtension = foldableSyntaxFacet.of({
-  nodePath: 'BulletList/ListItem/ListMark',
+  nodePath: "BulletList/ListItem/ListMark",
   onFold: (_state, node) => {
     const cursor = node.node.cursor();
-    if (cursor.nextSibling() && cursor.name === 'Task') return;
+    if (cursor.nextSibling() && cursor.name === "Task") return;
 
     return Decoration.replace({ widget: new BulletPoint() }).range(
       node.from,
-      node.to,
+      node.to
     );
   },
 });
