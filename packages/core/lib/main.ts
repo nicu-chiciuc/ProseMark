@@ -2,6 +2,7 @@ import {
   HighlightStyle,
   syntaxHighlighting,
   syntaxTree,
+  type TagStyle,
 } from '@codemirror/language';
 import {
   Decoration,
@@ -11,7 +12,7 @@ import {
 } from '@codemirror/view';
 import { type Range } from '@codemirror/state';
 import { EditorView } from 'codemirror';
-import { styleTags, tags } from '@lezer/highlight';
+import { styleTags, Tag, tags } from '@lezer/highlight';
 import {
   defaultHidableSyntaxExtensions,
   escapeMarkdownExtension,
@@ -110,6 +111,14 @@ export const hypermdMarkdownExtensions = [
   emojiMarkdownExtension,
 ];
 
+const headingTagStyles = (fontSizes: (string | null)[]): TagStyle[] =>
+  fontSizes.map((fontSize, i) => ({
+    tag: tags[`heading${i + 1}` as keyof typeof tags] as Tag,
+    fontSize,
+    fontWeight: 'bold',
+    textDecoration: 'none !important',
+  }));
+
 const syntaxPlugin = syntaxHighlighting(
   HighlightStyle.define([
     {
@@ -119,22 +128,9 @@ const syntaxPlugin = syntaxHighlighting(
     {
       tag: markdownTags.headerMark,
       color: 'lightskyblue',
+      textDecoration: 'none !important',
     },
-    {
-      tag: tags.heading1,
-      fontSize: '1.6em',
-      fontWeight: 'bold',
-    },
-    {
-      tag: tags.heading2,
-      fontSize: '1.4em',
-      fontWeight: 'bold',
-    },
-    {
-      tag: tags.heading3,
-      fontSize: '1.2em',
-      fontWeight: 'bold',
-    },
+    ...headingTagStyles(['1.6em', '1.4em', '1.2em', null, null, null]),
     {
       tag: tags.strong,
       fontWeight: 'bold',

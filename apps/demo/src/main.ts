@@ -8,7 +8,11 @@ import { hypermdExtensions, hypermdMarkdownExtensions } from 'hypermd';
 import * as HyperMD from 'hypermd';
 import { indentWithTab } from '@codemirror/commands';
 import { GFM } from '@lezer/markdown';
-import { syntaxTree } from '@codemirror/language';
+import {
+  defaultHighlightStyle,
+  syntaxHighlighting,
+  syntaxTree,
+} from '@codemirror/language';
 import { printTree } from '@lezer-unofficial/printer';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
@@ -27,6 +31,7 @@ const editor = new EditorView({
     }),
     EditorView.lineWrapping,
     hypermdExtensions,
+    syntaxHighlighting(defaultHighlightStyle),
     keymap.of([
       indentWithTab,
       {
