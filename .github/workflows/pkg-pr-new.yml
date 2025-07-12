@@ -20,7 +20,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Install package dependencies
-        run: bun --filter="@hypermd/*" install --frozen-lockfile
+        run: bun install --frozen-lockfile --filter="@hypermd/*"
 
       - name: Build
         run: bun --filter="@hypermd/*" run build
