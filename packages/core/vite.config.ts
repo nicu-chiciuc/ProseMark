@@ -4,7 +4,6 @@ import dts from 'vite-plugin-dts';
 import { externalizeDeps } from 'vite-plugin-externalize-deps';
 
 export default defineConfig({
-  root: './demo', // The app root during development
   plugins: [
     externalizeDeps(),
     dts({
@@ -12,7 +11,6 @@ export default defineConfig({
     }),
   ],
   build: {
-    outDir: '../dist', // relative to root (above)
     emptyOutDir: true,
     minify: false,
     sourcemap: true,
