@@ -1,7 +1,11 @@
 import { Decoration, EditorView, WidgetType } from '@codemirror/view';
-import { foldDecorationExtension, foldableSyntaxFacet } from './core';
+import { foldDecorationExtension, foldableSyntaxFacet } from '@hypermd/core';
 import { EditorSelection } from '@codemirror/state';
-import { eventHandlersWithClass, justPluginSpec } from '../utils';
+import type { EditorState } from '@codemirror/state';
+import { eventHandlersWithClass, justPluginSpec } from '@hypermd/core';
+import DOMPurify from 'dompurify';
+import type { SyntaxNodeRef } from '@lezer/common';
+import type { DecorationSet } from '@codemirror/view';
 
 class HTMLWidget extends WidgetType {
   constructor(public value: string) {
@@ -11,7 +15,10 @@ class HTMLWidget extends WidgetType {
   toDOM() {
     const el = document.createElement('div');
     el.className = 'cm-html-widget';
-    const parsed = new DOMParser().parseFromString(this.value, 'text/html');
+    const parsed = new DOMParser().parseFromString(
+      DOMPurify.sanitize(this.value),
+      'text/html',
+    );
 
     const walk = (root: Node) => {
       for (const node of [...root.childNodes]) {
@@ -57,7 +64,7 @@ const htmlBlockTheme = EditorView.theme({
 export const htmlBlockExtension = [
   foldableSyntaxFacet.of({
     nodePath: 'HTMLBlock',
-    onFold: (state, node) => {
+    onFold: (state: EditorState, node: SyntaxNodeRef) => {
       return Decoration.replace({
         widget: new HTMLWidget(state.doc.sliceString(node.from, node.to)),
         block: true,
@@ -69,20 +76,25 @@ export const htmlBlockExtension = [
   justPluginSpec({
     eventHandlers: eventHandlersWithClass({
       mousedown: {
-        'cm-html-widget': (e, view) => {
+        'cm-html-widget': (e: MouseEvent, view: EditorView) => {
           // Change selection when appropriate so that the content can be edited
           // (selection by mouse would overshoot the widget content range)
 
           const ranges = view.state.selection.ranges;
-          // @ts-expect-error If ranges is empty, || will short-circuit.
-          if (ranges.length === 0 || ranges[0].anchor !== ranges[0].head)
+          if (
+            !ranges ||
+            ranges.length === 0 ||
+            ranges[0]?.anchor !== ranges[0]?.head
+          )
             return;
 
           const target = e.target as HTMLElement;
           const pos = view.posAtDOM(target);
 
-          const decorations = view.state.field(foldDecorationExtension);
-          decorations.between(pos, pos, (from, to) => {
+          const decorations = view.state.field(
+            foldDecorationExtension,
+          ) as DecorationSet;
+          decorations!.between(pos, pos, (from: number, to: number) => {
             setTimeout(() => {
               view.dispatch({
                 selection: EditorSelection.single(to, from),

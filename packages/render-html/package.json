@@ -1,0 +1,36 @@
+{
+  "name": "@hypermd/render-html",
+  "version": "0.0.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/main.mjs",
+  "module": "./dist/main.mjs",
+  "exports": {
+    ".": {
+      "types": "./dist/main.d.ts",
+      "import": "./dist/main.mjs"
+    }
+  },
+  "scripts": {
+    "watch": "vite build --watch",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint --max-warnings=0",
+    "typecheck": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@codemirror/state": "^6.5.2",
+    "@codemirror/view": "^6.38.0",
+    "@hypermd/core": "workspace:*",
+    "@lezer/common": "=1.2.2",
+    "dompurify": "^3.0.11"
+  },
+  "devDependencies": {
+    "@types/dompurify": "^3.0.5"
+  }
+}

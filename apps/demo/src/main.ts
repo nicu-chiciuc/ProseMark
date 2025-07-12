@@ -4,8 +4,9 @@ import { basicSetup } from 'codemirror';
 import { EditorView, keymap } from '@codemirror/view';
 import { markdown } from '@codemirror/lang-markdown';
 import { languages } from '@codemirror/language-data';
-import { hypermdExtensions, hypermdMarkdownExtensions } from 'hypermd';
-import * as HyperMD from 'hypermd';
+import { hypermdExtensions, hypermdMarkdownExtensions } from '@hypermd/core';
+import * as HyperMD from '@hypermd/core';
+import { htmlBlockExtension } from '@hypermd/render-html';
 import { indentWithTab } from '@codemirror/commands';
 import { GFM } from '@lezer/markdown';
 import {
@@ -31,6 +32,7 @@ const editor = new EditorView({
     }),
     EditorView.lineWrapping,
     hypermdExtensions,
+    htmlBlockExtension,
     syntaxHighlighting(defaultHighlightStyle),
     keymap.of([
       indentWithTab,

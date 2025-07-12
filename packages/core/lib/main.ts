@@ -21,6 +21,9 @@ import { markdownTags } from './markdownTags';
 import { emojiMarkdownExtension } from './fold/emoji';
 import { defaultFoldableSyntaxExtensions } from './fold';
 
+export { foldDecorationExtension, foldableSyntaxFacet } from './fold/core';
+export { eventHandlersWithClass, justPluginSpec } from './utils';
+
 function traverseTree(view: EditorView) {
   const widgets: Range<Decoration>[] = [];
   for (const { from, to } of view.visibleRanges) {
