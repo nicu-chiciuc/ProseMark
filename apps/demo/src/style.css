@@ -35,4 +35,9 @@ h1 {
 #codemirror-container {
     min-height: 100px;
     width: 100%;
+    --font: Inter;
+
+    & .cm-activeLine {
+        background-color: inherit;
+    }
 }
