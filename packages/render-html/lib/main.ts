@@ -1,11 +1,8 @@
 import { Decoration, EditorView, WidgetType } from '@codemirror/view';
-import { foldDecorationExtension, foldableSyntaxFacet } from '@hypermd/core';
-import { EditorSelection } from '@codemirror/state';
+import {  foldableSyntaxFacet, selectAllDecorationsOnSelectExtension } from '@hypermd/core';
 import type { EditorState } from '@codemirror/state';
-import { eventHandlersWithClass, justPluginSpec } from '@hypermd/core';
 import DOMPurify from 'dompurify';
 import type { SyntaxNodeRef } from '@lezer/common';
-import type { DecorationSet } from '@codemirror/view';
 
 class HTMLWidget extends WidgetType {
   constructor(public value: string) {
@@ -73,37 +70,5 @@ export const htmlBlockExtension = [
     },
   }),
   htmlBlockTheme,
-  justPluginSpec({
-    eventHandlers: eventHandlersWithClass({
-      mousedown: {
-        'cm-html-widget': (e: MouseEvent, view: EditorView) => {
-          // Change selection when appropriate so that the content can be edited
-          // (selection by mouse would overshoot the widget content range)
-
-          const ranges = view.state.selection.ranges;
-          if (
-            !ranges ||
-            ranges.length === 0 ||
-            ranges[0]?.anchor !== ranges[0]?.head
-          )
-            return;
-
-          const target = e.target as HTMLElement;
-          const pos = view.posAtDOM(target);
-
-          const decorations = view.state.field(
-            foldDecorationExtension,
-          ) as DecorationSet;
-          decorations!.between(pos, pos, (from: number, to: number) => {
-            setTimeout(() => {
-              view.dispatch({
-                selection: EditorSelection.single(to, from),
-              });
-            }, 0);
-            return false;
-          });
-        },
-      },
-    }),
-  }),
+  selectAllDecorationsOnSelectExtension('cm-html-widget'),
 ];

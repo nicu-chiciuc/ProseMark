@@ -21,7 +21,7 @@ import { markdownTags } from './markdownTags';
 import { emojiMarkdownExtension } from './fold/emoji';
 import { defaultFoldableSyntaxExtensions } from './fold';
 
-export { foldDecorationExtension, foldableSyntaxFacet } from './fold/core';
+export { foldDecorationExtension, foldableSyntaxFacet, selectAllDecorationsOnSelectExtension } from './fold/core';
 export { eventHandlersWithClass, justPluginSpec } from './utils';
 
 function traverseTree(view: EditorView) {
@@ -116,7 +116,7 @@ export const hypermdMarkdownExtensions = [
 
 const headingTagStyles = (fontSizes: (string | null)[]): TagStyle[] =>
   fontSizes.map((fontSize, i) => ({
-    tag: tags[`heading${i + 1}` as keyof typeof tags] as Tag,
+    tag: tags[`heading${(i + 1).toString()}` as keyof typeof tags] as Tag,
     fontSize,
     fontWeight: 'bold',
     textDecoration: 'none !important',

@@ -3,14 +3,17 @@ import {
   StateField,
   type Range,
   Facet,
+  EditorSelection,
 } from '@codemirror/state';
 import {
   type DOMEventHandlers,
   Decoration,
   type DecorationSet,
   EditorView,
+  type PluginValue,
+  ViewPlugin,
 } from '@codemirror/view';
-import { type RangeLike, selectionTouchesRange } from '../utils';
+import { eventHandlersWithClass, justPluginSpec, type RangeLike, selectionTouchesRange } from '../utils';
 import type { SyntaxNodeRef } from '@lezer/common';
 import { syntaxTree } from '@codemirror/language';
 
@@ -87,21 +90,6 @@ export const foldDecorationExtension = StateField.define<DecorationSet>({
 
 export const foldExtension = [
   foldDecorationExtension,
-  // Print clicked on decoration
-  // justPluginSpec({
-  //   eventHandlers: {
-  //     mousedown: (e, view) => {
-  //       const target = e.target as HTMLElement;
-  //       const pos = view.posAtDOM(target);
-  //       view.state
-  //         .field(foldDecorationExtension)
-  //         .between(pos, pos, (from, to, decoration) => {
-  //           console.log(decoration.spec.widget);
-  //         });
-  //       return false;
-  //     },
-  //   },
-  // }),
 ];
 
 export interface FoldableSyntaxSpec {
@@ -122,4 +110,37 @@ export const foldableSyntaxFacet = Facet.define<
     return [...value];
   },
   enables: foldExtension,
+});
+
+export const selectAllDecorationsOnSelectExtension = (widgetClass: string): ViewPlugin<PluginValue> => justPluginSpec({
+  eventHandlers: eventHandlersWithClass({
+    mousedown: {
+      [widgetClass]: (e: MouseEvent, view: EditorView) => {
+        // Change selection when appropriate so that the content can be edited
+        // (selection by mouse would overshoot the widget content range)
+
+        const ranges = view.state.selection.ranges;
+        if (
+          ranges.length === 0 ||
+          ranges[0]?.anchor !== ranges[0]?.head
+        )
+          return;
+
+        const target = e.target as HTMLElement;
+        const pos = view.posAtDOM(target);
+
+        const decorations = view.state.field(
+          foldDecorationExtension,
+        );
+        decorations.between(pos, pos, (from: number, to: number) => {
+          setTimeout(() => {
+            view.dispatch({
+              selection: EditorSelection.single(to, from),
+            });
+          }, 0);
+          return false;
+        });
+      },
+    }
+  })
 });
