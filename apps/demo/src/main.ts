@@ -15,10 +15,10 @@ import {
   syntaxTree,
 } from '@codemirror/language';
 import { printTree } from '@lezer-unofficial/printer';
+import initDoc from './initDoc.md?raw';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
-    <h1>HyperMD Demo Page</h1>
     <div id="codemirror-container"></div>
   </div>
 `;
@@ -47,7 +47,7 @@ const editor = new EditorView({
       },
     ]),
   ],
-  doc: '<div>Hello World</div>\n\n',
+  doc: initDoc,
   parent: document.getElementById('codemirror-container')!,
 });
 
