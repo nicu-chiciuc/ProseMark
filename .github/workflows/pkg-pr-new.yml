@@ -16,9 +16,13 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Deps and  Build
-        run: |
-          bun install --frozen-lockfile --filter="@hypermd/*"
-          bun --filter="@hypermd/*" run build
+      - name: Install Dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build @hypermd/core
+        run: bun --filter="@hypermd/core" run build
+
+      - name: Build @hypermd/render-html
+        run: bun --filter="@hypermd/render-html" run build
 
       - run: bunx pkg-pr-new publish 'packages/*'
