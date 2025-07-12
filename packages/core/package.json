@@ -14,7 +14,7 @@
     }
   },
   "scripts": {
-    "dev": "vite",
+    "watch": "vite build --watch",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint --max-warnings=0",
