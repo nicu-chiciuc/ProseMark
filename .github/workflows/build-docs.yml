@@ -26,19 +26,36 @@ jobs:
         with:
           ref: main
 
-      - name: Install, build, and upload your site
-        uses: withastro/action@v2
+      - uses: oven-sh/setup-bun@v2
+
+      - uses: actions/setup-node@v4
         with:
-          path: docs # The root location of your Astro project inside the repository. (optional)
           node-version: 20
-          package-manager: pnpm@latest
+
+      - name: Install Dependencies
+        run: bun install --frozen-lockfile
+
+      - name: TurboRepo Build
+        run: bun turbo build -F docs
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'docs/dist/'
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write # to deploy to Pages
+      id-token: write # to verify the deployment originates from an appropriate source
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
