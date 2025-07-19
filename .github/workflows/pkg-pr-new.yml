@@ -12,6 +12,7 @@ jobs:
         uses: actions/checkout@v2
 
       - uses: oven-sh/setup-bun@v2
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -19,10 +20,7 @@ jobs:
       - name: Install Dependencies
         run: bun install --frozen-lockfile
 
-      - name: Build @hypermd/core
-        run: bun --filter="@hypermd/core" run build
-
-      - name: Build @hypermd/render-html
-        run: bun --filter="@hypermd/render-html" run build
+      - name: TurboRepo Build
+        run: bun turbo build -F "{$(bun --silent get-package-list)}"
 
       - run: bunx pkg-pr-new publish 'packages/*'

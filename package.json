@@ -7,6 +7,9 @@
     "packages/*",
     "docs"
   ],
+  "scripts": {
+    "get-package-list": "find packages -maxdepth 2 -name 'package.json' -exec jq -r '.name' {} \\; | paste -sd, -"
+  },
   "devDependencies": {
     "pkg-pr-new": "^0.0.39",
     "prettier": "^3.4.2",
