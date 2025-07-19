@@ -3,30 +3,30 @@ import {
   syntaxHighlighting,
   syntaxTree,
   type TagStyle,
-} from "@codemirror/language";
+} from '@codemirror/language';
 import {
   Decoration,
   type DecorationSet,
   ViewPlugin,
   type ViewUpdate,
-} from "@codemirror/view";
-import { type Range } from "@codemirror/state";
-import { EditorView } from "codemirror";
-import { styleTags, Tag, tags } from "@lezer/highlight";
+} from '@codemirror/view';
+import { type Range } from '@codemirror/state';
+import { EditorView } from 'codemirror';
+import { styleTags, Tag, tags } from '@lezer/highlight';
 import {
   defaultHidableSyntaxExtensions,
   escapeMarkdownExtension,
-} from "./hide";
-import { markdownTags } from "./markdownTags";
-import { emojiMarkdownExtension } from "./fold/emoji";
-import { defaultFoldableSyntaxExtensions } from "./fold";
+} from './hide';
+import { markdownTags } from './markdownTags';
+import { emojiMarkdownExtension } from './fold/emoji';
+import { defaultFoldableSyntaxExtensions } from './fold';
 
 export {
   foldDecorationExtension,
   foldableSyntaxFacet,
   selectAllDecorationsOnSelectExtension,
-} from "./fold/core";
-export { eventHandlersWithClass, justPluginSpec } from "./utils";
+} from './fold/core';
+export { eventHandlersWithClass, justPluginSpec } from './utils';
 
 function traverseTree(view: EditorView) {
   const widgets: Range<Decoration>[] = [];
@@ -75,28 +75,28 @@ const traverseTreePlugin = ViewPlugin.fromClass(
     //     return true;
     //   }),
     // ],
-  }
+  },
 );
 
 const themePlugin = EditorView.theme({
-  ".cm-content": {
-    fontFamily: "var(--font)",
-    fontSize: "0.9rem",
+  '.cm-content': {
+    fontFamily: 'var(--font)',
+    fontSize: '0.9rem',
   },
-  "&.cm-focused": {
-    outline: "none",
+  '&.cm-focused': {
+    outline: 'none',
   },
-  ".cm-inline-code": {
-    fontFamily: "monospace",
-    padding: "0.2rem",
-    backgroundColor: "grey",
-    borderRadius: "0.2rem",
+  '.cm-inline-code': {
+    fontFamily: 'monospace',
+    padding: '0.2rem',
+    backgroundColor: 'grey',
+    borderRadius: '0.2rem',
   },
-  ".cm-rendered-link": {
-    textDecoration: "underline",
+  '.cm-rendered-link': {
+    textDecoration: 'underline',
   },
-  ".cm-list-mark": {
-    color: "bluegreen",
+  '.cm-list-mark': {
+    color: 'grey',
   },
 });
 
@@ -122,51 +122,51 @@ const headingTagStyles = (fontSizes: (string | null)[]): TagStyle[] =>
   fontSizes.map((fontSize, i) => ({
     tag: tags[`heading${(i + 1).toString()}` as keyof typeof tags] as Tag,
     fontSize,
-    fontWeight: "bold",
-    textDecoration: "none !important",
+    fontWeight: 'bold',
+    textDecoration: 'none !important',
   }));
 
 const syntaxPlugin = syntaxHighlighting(
   HighlightStyle.define([
     {
       tag: [tags.processingInstruction, tags.labelName],
-      class: "text-slate-400",
+      class: 'text-slate-400',
     },
     {
       tag: markdownTags.headerMark,
-      color: "lightskyblue",
-      textDecoration: "none !important",
+      color: 'lightskyblue',
+      textDecoration: 'none !important',
     },
-    ...headingTagStyles(["1.6em", "1.4em", "1.2em", null, null, null]),
+    ...headingTagStyles(['1.6em', '1.4em', '1.2em', null, null, null]),
     {
       tag: tags.strong,
-      fontWeight: "bold",
+      fontWeight: 'bold',
     },
     {
       tag: tags.emphasis,
-      fontStyle: "italic",
+      fontStyle: 'italic',
     },
     {
       tag: tags.strikethrough,
-      textDecoration: "line-through",
+      textDecoration: 'line-through',
     },
     {
       tag: markdownTags.linkURL,
-      textDecoration: "underline",
+      textDecoration: 'underline',
     },
     {
       tag: markdownTags.escapeMark,
-      color: "grey",
+      color: 'grey',
     },
     {
       tag: tags.comment,
-      color: "grey",
+      color: 'grey',
     },
     {
       tag: markdownTags.listMark,
-      class: "cm-list-mark",
+      class: 'cm-list-mark',
     },
-  ])
+  ]),
 );
 
 export const hypermdExtensions = [

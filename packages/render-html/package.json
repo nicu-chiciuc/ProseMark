@@ -14,11 +14,11 @@
     }
   },
   "scripts": {
-    "watch": "vite build --watch",
+    "dev": "vite build --watch",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint --max-warnings=0",
-    "typecheck": "tsc"
+    "check-types": "tsc"
   },
   "keywords": [],
   "author": "",
