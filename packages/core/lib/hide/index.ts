@@ -9,7 +9,7 @@ import { markdownTags } from '../markdownTags';
 import { stateWORDAt } from '../utils';
 
 export const renderedLinkDecoration = Decoration.mark({
-  class: 'cm-rendered-link', // not styled by HyperMD, but available for the user
+  class: 'cm-rendered-link',
 });
 
 const defaultHidableSpecs: HidableSyntaxSpec[] = [

@@ -5,13 +5,7 @@ import {
   type SelectionRange,
   findClusterBreak,
 } from '@codemirror/state';
-import {
-  type DOMEventHandlers,
-  type DOMEventMap,
-  type PluginSpec,
-  ViewPlugin,
-  type PluginValue,
-} from '@codemirror/view';
+import { type DOMEventHandlers, type DOMEventMap } from '@codemirror/view';
 import type { TreeCursor } from '@lezer/common';
 import { EditorView } from 'codemirror';
 
@@ -75,12 +69,6 @@ export function iterChildren(
     if (enter(cursor)) break;
   } while (cursor.nextSibling());
   console.assert(cursor.parent());
-}
-
-export function justPluginSpec(
-  spec: PluginSpec<PluginValue>,
-): ViewPlugin<PluginValue> {
-  return ViewPlugin.define(() => ({}), spec);
 }
 
 export type ClassBasedEventHandlers<This> = {

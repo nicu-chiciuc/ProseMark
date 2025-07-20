@@ -4,16 +4,19 @@ import {
   type Range,
   Facet,
   EditorSelection,
+  type Extension,
 } from '@codemirror/state';
 import {
   type DOMEventHandlers,
   Decoration,
   type DecorationSet,
   EditorView,
-  type PluginValue,
-  ViewPlugin,
 } from '@codemirror/view';
-import { eventHandlersWithClass, justPluginSpec, type RangeLike, selectionTouchesRange } from '../utils';
+import {
+  eventHandlersWithClass,
+  type RangeLike,
+  selectionTouchesRange,
+} from '../utils';
 import type { SyntaxNodeRef } from '@lezer/common';
 import { syntaxTree } from '@codemirror/language';
 
@@ -88,9 +91,7 @@ export const foldDecorationExtension = StateField.define<DecorationSet>({
   provide: (f) => [EditorView.decorations.from(f)],
 });
 
-export const foldExtension = [
-  foldDecorationExtension,
-];
+export const foldExtension = [foldDecorationExtension];
 
 export interface FoldableSyntaxSpec {
   nodePath: string | string[] | ((nodeName: string) => boolean);
@@ -112,35 +113,33 @@ export const foldableSyntaxFacet = Facet.define<
   enables: foldExtension,
 });
 
-export const selectAllDecorationsOnSelectExtension = (widgetClass: string): ViewPlugin<PluginValue> => justPluginSpec({
-  eventHandlers: eventHandlersWithClass({
-    mousedown: {
-      [widgetClass]: (e: MouseEvent, view: EditorView) => {
-        // Change selection when appropriate so that the content can be edited
-        // (selection by mouse would overshoot the widget content range)
+export const selectAllDecorationsOnSelectExtension = (
+  widgetClass: string,
+): Extension =>
+  EditorView.domEventHandlers(
+    eventHandlersWithClass({
+      mousedown: {
+        [widgetClass]: (e: MouseEvent, view: EditorView) => {
+          // Change selection when appropriate so that the content can be edited
+          // (selection by mouse would overshoot the widget content range)
 
-        const ranges = view.state.selection.ranges;
-        if (
-          ranges.length === 0 ||
-          ranges[0]?.anchor !== ranges[0]?.head
-        )
-          return;
+          const ranges = view.state.selection.ranges;
+          if (ranges.length === 0 || ranges[0]?.anchor !== ranges[0]?.head)
+            return;
 
-        const target = e.target as HTMLElement;
-        const pos = view.posAtDOM(target);
+          const target = e.target as HTMLElement;
+          const pos = view.posAtDOM(target);
 
-        const decorations = view.state.field(
-          foldDecorationExtension,
-        );
-        decorations.between(pos, pos, (from: number, to: number) => {
-          setTimeout(() => {
-            view.dispatch({
-              selection: EditorSelection.single(to, from),
-            });
-          }, 0);
-          return false;
-        });
+          const decorations = view.state.field(foldDecorationExtension);
+          decorations.between(pos, pos, (from: number, to: number) => {
+            setTimeout(() => {
+              view.dispatch({
+                selection: EditorSelection.single(to, from),
+              });
+            }, 0);
+            return false;
+          });
+        },
       },
-    }
-  })
-});
+    }),
+  );

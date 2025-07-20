@@ -23,6 +23,13 @@ export const themePlugin = EditorView.theme({
   },
   '.cm-rendered-link': {
     textDecoration: 'underline',
+    cursor: 'pointer',
+    color: 'blue',
+  },
+  '.cm-url': {
+    textDecoration: 'underline',
+    cursor: 'pointer',
+    color: 'blue',
   },
   '.cm-list-mark': {
     color: 'grey',
@@ -77,7 +84,7 @@ export const syntaxHighlightPlugin = syntaxHighlighting(
     },
     {
       tag: markdownTags.linkURL,
-      textDecoration: 'underline',
+      class: 'cm-url', // needed for click event
     },
     {
       tag: markdownTags.escapeMark,

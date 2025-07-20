@@ -1,6 +1,6 @@
-import { Decoration, WidgetType } from '@codemirror/view';
+import { Decoration, EditorView, WidgetType } from '@codemirror/view';
 import { foldableSyntaxFacet } from './core';
-import { eventHandlersWithClass, justPluginSpec } from '../utils';
+import { eventHandlersWithClass } from '../utils';
 
 class Checkbox extends WidgetType {
   value: boolean;
@@ -38,8 +38,8 @@ export const taskExtension = [
       to: node.to,
     }),
   }),
-  justPluginSpec({
-    eventHandlers: eventHandlersWithClass({
+  EditorView.domEventHandlers(
+    eventHandlersWithClass({
       mousedown: {
         'cm-checkbox': (ev, view) => {
           const pos = view.posAtDOM(ev.target as HTMLElement);
@@ -55,5 +55,5 @@ export const taskExtension = [
         },
       },
     }),
-  }),
+  ),
 ];

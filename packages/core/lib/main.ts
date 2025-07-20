@@ -9,13 +9,14 @@ import {
   syntaxHighlightPlugin,
   themePlugin,
 } from './syntaxHighlighting';
+import { clickLinkExtension } from './clickLink';
 
 export {
   foldDecorationExtension,
   foldableSyntaxFacet,
   selectAllDecorationsOnSelectExtension,
 } from './fold/core';
-export { eventHandlersWithClass, justPluginSpec } from './utils';
+export { eventHandlersWithClass } from './utils';
 
 export const hypermdMarkdownExtensions = [
   additionalMarkdownSyntaxTags,
@@ -28,4 +29,5 @@ export const hypermdExtensions = [
   syntaxHighlightPlugin,
   defaultHidableSyntaxExtensions,
   defaultFoldableSyntaxExtensions,
+  clickLinkExtension,
 ];
