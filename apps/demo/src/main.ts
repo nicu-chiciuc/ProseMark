@@ -14,8 +14,9 @@ import {
   syntaxHighlighting,
   syntaxTree,
 } from '@codemirror/language';
-import { printTree } from '@lezer-unofficial/printer';
+import { printTree, traverseTree } from '@lezer-unofficial/printer';
 import initDoc from './initDoc.md?raw';
+import { traverseTreePlugin } from './traverseTreePlugin';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -46,6 +47,7 @@ const editor = new EditorView({
         },
       },
     ]),
+    traverseTreePlugin,
   ],
   doc: initDoc,
   parent: document.getElementById('codemirror-container')!,

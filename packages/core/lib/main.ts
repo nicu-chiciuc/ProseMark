@@ -1,16 +1,8 @@
 import {
   HighlightStyle,
   syntaxHighlighting,
-  syntaxTree,
   type TagStyle,
 } from '@codemirror/language';
-import {
-  Decoration,
-  type DecorationSet,
-  ViewPlugin,
-  type ViewUpdate,
-} from '@codemirror/view';
-import { type Range } from '@codemirror/state';
 import { EditorView } from 'codemirror';
 import { styleTags, Tag, tags } from '@lezer/highlight';
 import {
@@ -27,56 +19,6 @@ export {
   selectAllDecorationsOnSelectExtension,
 } from './fold/core';
 export { eventHandlersWithClass, justPluginSpec } from './utils';
-
-function traverseTree(view: EditorView) {
-  const widgets: Range<Decoration>[] = [];
-  for (const { from, to } of view.visibleRanges) {
-    syntaxTree(view.state).iterate({
-      from,
-      to,
-      enter: (_node) => {
-        // let cursor = node.node.cursor();
-      },
-    });
-  }
-  return Decoration.set(widgets, true);
-}
-
-const traverseTreePlugin = ViewPlugin.fromClass(
-  class {
-    decorations: DecorationSet;
-
-    constructor(view: EditorView) {
-      this.decorations = traverseTree(view);
-    }
-
-    update(update: ViewUpdate) {
-      if (
-        update.selectionSet ||
-        update.docChanged ||
-        update.viewportChanged ||
-        syntaxTree(update.startState) != syntaxTree(update.state)
-      )
-        this.decorations = traverseTree(update.view);
-    }
-  },
-  {
-    decorations: (v) => v.decorations,
-
-    // eventHandlers: {
-    //   mousedown: (e, view) => {
-    //     let target = e.target as HTMLElement;
-    //     // console.log(target);
-    //   },
-    // },
-    // provide: (p) => [
-    //   EditorState.changeFilter.of((tr) => {
-    //     if (tr.selection) console.log(tr.selection.ranges[0]);
-    //     return true;
-    //   }),
-    // ],
-  },
-);
 
 const themePlugin = EditorView.theme({
   '.cm-content': {
@@ -174,5 +116,4 @@ export const hypermdExtensions = [
   syntaxPlugin,
   defaultHidableSyntaxExtensions,
   defaultFoldableSyntaxExtensions,
-  traverseTreePlugin,
 ];
