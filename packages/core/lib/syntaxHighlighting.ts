@@ -34,6 +34,15 @@ export const themePlugin = EditorView.theme({
   '.cm-list-mark': {
     color: 'grey',
   },
+  '.cm-blockquote-vertical-line': {
+    display: 'inline-block',
+    width: '4px',
+    backgroundColor: '#ccc',
+    marginRight: '4px',
+    marginLeft: '4px',
+    height: '1.4em',
+    verticalAlign: 'bottom',
+  },
 });
 
 export const additionalMarkdownSyntaxTags = {

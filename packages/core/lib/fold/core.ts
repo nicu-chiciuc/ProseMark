@@ -17,6 +17,7 @@ import {
   type RangeLike,
   selectionTouchesRange,
 } from '../utils';
+
 import type { SyntaxNodeRef } from '@lezer/common';
 import { syntaxTree } from '@codemirror/language';
 
@@ -94,7 +95,7 @@ export const foldDecorationExtension = StateField.define<DecorationSet>({
 export const foldExtension = [foldDecorationExtension];
 
 export interface FoldableSyntaxSpec {
-  nodePath: string | string[] | ((nodeName: string) => boolean);
+  nodePath: string | string[] | ((nodePath: string) => boolean);
   onFold?: (
     state: EditorState,
     node: SyntaxNodeRef,
