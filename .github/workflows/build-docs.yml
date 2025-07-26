@@ -23,8 +23,6 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
-        with:
-          ref: main
 
       - uses: oven-sh/setup-bun@v2
 
@@ -39,12 +37,14 @@ jobs:
         run: bun turbo build -F docs
 
       - name: Upload Pages Artifact
+        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'docs/dist/'
 
   deploy:
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
 
     # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
