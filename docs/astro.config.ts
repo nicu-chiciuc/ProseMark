@@ -4,8 +4,7 @@ import starlightTypeDoc, { typeDocSidebarGroup } from 'starlight-typedoc';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://jsimonrichard.github.io',
-  base: 'ProseMark',
+  site: 'https://prosemark.com',
   integrations: [
     starlight({
       title: 'ProseMark Docs',
