@@ -15,7 +15,7 @@
     "vite": "^5.3.1"
   },
   "dependencies": {
-    "@hypermd/core": "workspace:*",
-    "@hypermd/render-html": "workspace:*"
+    "@prosemark/core": "workspace:*",
+    "@prosemark/render-html": "workspace:*"
   }
 }

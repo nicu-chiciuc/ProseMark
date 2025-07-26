@@ -22,13 +22,13 @@ export {
 } from './fold/core';
 export { eventHandlersWithClass } from './utils';
 
-export const hypermdMarkdownExtensions = [
+export const prosemarkMarkdownExtensions = [
   additionalMarkdownSyntaxTags,
   escapeMarkdownExtension,
   emojiMarkdownExtension,
 ];
 
-export const hypermdExtensions = [
+export const prosemarkExtensions = [
   themePlugin,
   syntaxHighlightPlugin,
   defaultHidableSyntaxExtensions,
