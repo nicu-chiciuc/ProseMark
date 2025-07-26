@@ -1,6 +1,43 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import starlightTypeDoc, { typeDocSidebarGroup } from 'starlight-typedoc';
+import { createStarlightTypeDocPlugin } from 'starlight-typedoc';
+
+const buildTypeDocEntry = (
+  pkg: string,
+  pkgDir: string,
+  entryPoint?: string,
+  tsConfig?: string,
+) => {
+  const [pluginGenerator, sidebarGroup] = createStarlightTypeDocPlugin();
+  const entryPointFull = pkgDir + '/' + (entryPoint ?? 'lib/main.ts');
+  const tsConfigFull = pkgDir + '/' + (tsConfig ?? 'tsconfig.json');
+
+  return {
+    name: pkg,
+    plugin: pluginGenerator({
+      entryPoints: [entryPointFull],
+      tsconfig: tsConfigFull,
+      output: 'api/' + pkg,
+      sidebar: {
+        label: pkg,
+      },
+      typeDoc: {
+        githubPages: false,
+        // disableGit: true, // needed when running jujutsu locally
+        // sourceLinkExternal: true,
+        // sourceLinkTemplate:
+        //   'https://github.com/jsimonrichard/ProseMark/blob/main/packages/core/lib/{path}#L{line}',
+      },
+    }),
+    sidebarGroup,
+  };
+};
+
+const core = buildTypeDocEntry('@prosemark/core', '../../packages/core');
+const renderHtml = buildTypeDocEntry(
+  '@prosemark/render-html',
+  '../../packages/render-html',
+);
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,37 +49,24 @@ export default defineConfig({
         {
           icon: 'github',
           label: 'GitHub',
-          href: 'https://github.com/withastro/starlight',
+          href: 'https://github.com/jsimonrichard/ProseMark',
         },
       ],
       sidebar: [
         {
           label: 'Guides',
-          items: [
-            // Each item here is one entry in the navigation menu.
-            { label: 'Example Guide', slug: 'guides/example' },
-          ],
+          autogenerate: { directory: 'guides' },
         },
         {
           label: 'Reference',
           autogenerate: { directory: 'reference' },
         },
-        typeDocSidebarGroup,
+        {
+          label: 'API',
+          items: [core.sidebarGroup, renderHtml.sidebarGroup],
+        },
       ],
-      plugins: [
-        // Generate the documentation.
-        starlightTypeDoc({
-          entryPoints: ['../../packages/core/lib/main.ts'],
-          tsconfig: '../../packages/core/tsconfig.json',
-          typeDoc: {
-            githubPages: false,
-            // disableGit: true, // needed when running jujutsu locally
-            // sourceLinkExternal: true,
-            // sourceLinkTemplate:
-            //   'https://github.com/jsimonrichard/ProseMark/blob/main/packages/core/lib/{path}#L{line}',
-          },
-        }),
-      ],
+      plugins: [core.plugin, renderHtml.plugin],
 
       editLink: {
         baseUrl:
