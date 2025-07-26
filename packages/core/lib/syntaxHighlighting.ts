@@ -18,7 +18,7 @@ export const themePlugin = EditorView.theme({
   '.cm-inline-code': {
     fontFamily: 'monospace',
     padding: '0.2rem',
-    backgroundColor: '#ddd',
+    backgroundColor: '#f0f0f0dd',
     borderRadius: '0.4rem',
     fontSize: '0.8rem',
   },
@@ -53,6 +53,7 @@ export const additionalMarkdownSyntaxTags = {
     // Override tags here
     styleTags({
       HeaderMark: markdownTags.headerMark,
+      FencedCode: markdownTags.fencedCode,
       InlineCode: markdownTags.inlineCode,
       URL: markdownTags.linkURL,
       ListMark: markdownTags.listMark,
@@ -70,10 +71,6 @@ const headingTagStyles = (fontSizes: (string | null)[]): TagStyle[] =>
 
 export const syntaxHighlightPlugin = syntaxHighlighting(
   HighlightStyle.define([
-    // {
-    //   tag: [tags.processingInstruction, tags.labelName],
-    //   class: 'text-slate-400',
-    // },
     {
       tag: markdownTags.headerMark,
       color: 'lightskyblue',

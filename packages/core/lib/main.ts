@@ -10,6 +10,10 @@ import {
   themePlugin,
 } from './syntaxHighlighting';
 import { clickLinkExtension } from './clickLink';
+import {
+  codeBlockDecorationsExtension,
+  codeFenceTheme,
+} from './codeFenceExtension';
 
 export {
   foldDecorationExtension,
@@ -30,4 +34,6 @@ export const hypermdExtensions = [
   defaultHidableSyntaxExtensions,
   defaultFoldableSyntaxExtensions,
   clickLinkExtension,
+  codeBlockDecorationsExtension,
+  codeFenceTheme,
 ];
