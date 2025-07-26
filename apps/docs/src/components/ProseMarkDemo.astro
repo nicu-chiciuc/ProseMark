@@ -1,0 +1,139 @@
+---
+
+---
+
+<div id="app">
+  <div id="codemirror-container"></div>
+</div>
+
+<script>
+  import { basicSetup } from 'codemirror';
+  import { EditorView, keymap } from '@codemirror/view';
+  import { markdown } from '@codemirror/lang-markdown';
+  import { languages } from '@codemirror/language-data';
+  import {
+    prosemarkExtensions,
+    prosemarkMarkdownExtensions,
+  } from '@prosemark/core';
+  import * as ProseMark from '@prosemark/core';
+  import { htmlBlockExtension } from '@prosemark/render-html';
+  import { indentWithTab } from '@codemirror/commands';
+  import { GFM } from '@lezer/markdown';
+  import {
+    defaultHighlightStyle,
+    syntaxHighlighting,
+    syntaxTree,
+  } from '@codemirror/language';
+  import { printTree } from '@lezer-unofficial/printer';
+  import {
+    Decoration,
+    type DecorationSet,
+    ViewPlugin,
+    type ViewUpdate,
+  } from '@codemirror/view';
+  import type { Range } from '@codemirror/state';
+  import initDoc from './initDoc.md?raw';
+
+  function traverseTree(view: EditorView) {
+    console.log('Traversing tree...');
+    const widgets: Range<Decoration>[] = [];
+    for (const { from, to } of view.visibleRanges) {
+      syntaxTree(view.state).iterate({
+        from,
+        to,
+        enter: (node) => {
+          if (
+            view.state.selection.ranges.some(
+              (range) => node.from <= range.to && range.from <= node.to,
+            )
+          ) {
+            console.log(node.type, node.name);
+          }
+        },
+      });
+    }
+    return Decoration.set(widgets, true);
+  }
+
+  const traverseTreePlugin = ViewPlugin.fromClass(
+    class {
+      decorations: DecorationSet;
+
+      constructor(view: EditorView) {
+        this.decorations = traverseTree(view);
+      }
+
+      update(update: ViewUpdate) {
+        if (
+          update.selectionSet ||
+          update.docChanged ||
+          update.viewportChanged ||
+          syntaxTree(update.startState) != syntaxTree(update.state)
+        )
+          this.decorations = traverseTree(update.view);
+      }
+    },
+    {
+      decorations: (v) => v.decorations,
+    },
+  );
+
+  const editor = new EditorView({
+    extensions: [
+      // basicSetup,
+      markdown({
+        codeLanguages: languages,
+        extensions: [GFM, prosemarkMarkdownExtensions],
+      }),
+      EditorView.lineWrapping,
+      prosemarkExtensions,
+      htmlBlockExtension,
+      syntaxHighlighting(defaultHighlightStyle),
+      keymap.of([
+        indentWithTab,
+        {
+          key: 'Alt-p',
+          run: (view) => {
+            console.log(
+              printTree(syntaxTree(view.state), view.state.doc.toString()),
+            );
+            return true;
+          },
+        },
+      ]),
+      traverseTreePlugin,
+    ],
+    doc: initDoc,
+    parent: document.getElementById('codemirror-container')!,
+  });
+
+  Object.assign(window, { editor, ProseMark });
+</script>
+
+<style>
+  :root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #app {
+    width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  #codemirror-container {
+    min-height: 100px;
+    width: 100%;
+    --font: Inter;
+    * {
+      margin-top: 0px;
+    }
+  }
+</style>
