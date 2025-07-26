@@ -34,3 +34,9 @@ jspm_packages/
 .env.test.local
 .env.production.local
 .env.local
+
+# Build output
+dist/
+
+# Turbo repo
+.turbo
