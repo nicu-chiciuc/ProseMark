@@ -4,8 +4,7 @@ import starlightTypeDoc, { typeDocSidebarGroup } from 'starlight-typedoc';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://jsimonrichard.github.io',
-  base: 'ProseMark',
+  site: 'https://prosemark.com',
   integrations: [
     starlight({
       title: 'ProseMark Docs',
@@ -33,8 +32,8 @@ export default defineConfig({
       plugins: [
         // Generate the documentation.
         starlightTypeDoc({
-          entryPoints: ['../packages/core/lib/main.ts'],
-          tsconfig: '../packages/core/tsconfig.json',
+          entryPoints: ['../../packages/core/lib/main.ts'],
+          tsconfig: '../../packages/core/tsconfig.json',
           typeDoc: {
             githubPages: false,
             // disableGit: true, // needed when running jujutsu locally

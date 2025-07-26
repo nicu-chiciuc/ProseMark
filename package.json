@@ -4,8 +4,7 @@
   "type": "module",
   "workspaces": [
     "apps/*",
-    "packages/*",
-    "docs"
+    "packages/*"
   ],
   "devDependencies": {
     "pkg-pr-new": "^0.0.39",
