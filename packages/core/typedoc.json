@@ -4,7 +4,7 @@
   "out": "../../typedoc-output/core", // Adjust output path as needed
   "tsconfig": "./tsconfig.json", // Relative to this typedoc.json
   "theme": "default", // Use default HTML theme for initial testing
-  "sourceLinkTemplate": "https://github.com/jsimonrichard/HyperMD/blob/main/packages/core/{path}#L{line}",
+  "sourceLinkTemplate": "https://github.com/jsimonrichard/ProseMark/blob/main/packages/core/{path}#L{line}",
   "sourceLinkExternal": true,
   "gitRevision": "main" // Temporarily hardcode if {gitRevision} is problematic
 }

@@ -4,9 +4,12 @@ import { basicSetup } from 'codemirror';
 import { EditorView, keymap } from '@codemirror/view';
 import { markdown } from '@codemirror/lang-markdown';
 import { languages } from '@codemirror/language-data';
-import { hypermdExtensions, hypermdMarkdownExtensions } from '@hypermd/core';
-import * as HyperMD from '@hypermd/core';
-import { htmlBlockExtension } from '@hypermd/render-html';
+import {
+  prosemarkExtensions,
+  prosemarkMarkdownExtensions,
+} from '@prosemark/core';
+import * as ProseMark from '@prosemark/core';
+import { htmlBlockExtension } from '@prosemark/render-html';
 import { indentWithTab } from '@codemirror/commands';
 import { GFM } from '@lezer/markdown';
 import {
@@ -29,10 +32,10 @@ const editor = new EditorView({
     basicSetup,
     markdown({
       codeLanguages: languages,
-      extensions: [GFM, hypermdMarkdownExtensions],
+      extensions: [GFM, prosemarkMarkdownExtensions],
     }),
     EditorView.lineWrapping,
-    hypermdExtensions,
+    prosemarkExtensions,
     htmlBlockExtension,
     syntaxHighlighting(defaultHighlightStyle),
     keymap.of([
@@ -54,4 +57,4 @@ const editor = new EditorView({
 });
 
 // for easier debugging
-Object.assign(window, { editor, HyperMD });
+Object.assign(window, { editor, ProseMark });

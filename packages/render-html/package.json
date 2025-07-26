@@ -1,5 +1,5 @@
 {
-  "name": "@hypermd/render-html",
+  "name": "@prosemark/render-html",
   "version": "0.0.0",
   "type": "module",
   "files": [
@@ -26,7 +26,7 @@
   "dependencies": {
     "@codemirror/state": "^6.5.2",
     "@codemirror/view": "^6.38.0",
-    "@hypermd/core": "workspace:*",
+    "@prosemark/core": "workspace:*",
     "@lezer/common": "=1.2.2",
     "dompurify": "^3.0.11"
   },

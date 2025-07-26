@@ -5,10 +5,10 @@ import starlightTypeDoc, { typeDocSidebarGroup } from 'starlight-typedoc';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://jsimonrichard.github.io',
-  base: 'HyperMD',
+  base: 'ProseMark',
   integrations: [
     starlight({
-      title: 'HyperMD Docs',
+      title: 'ProseMark Docs',
       social: [
         {
           icon: 'github',
@@ -40,7 +40,7 @@ export default defineConfig({
             // disableGit: true, // needed when running jujutsu locally
             // sourceLinkExternal: true,
             // sourceLinkTemplate:
-            //   'https://github.com/jsimonrichard/HyperMD/blob/main/packages/core/lib/{path}#L{line}',
+            //   'https://github.com/jsimonrichard/ProseMark/blob/main/packages/core/lib/{path}#L{line}',
           },
         }),
       ],
@@ -49,7 +49,7 @@ export default defineConfig({
         baseUrl:
           process.env.NODE_ENV === 'development'
             ? `vscode://file/${import.meta.dirname}`
-            : 'https://github.com/jsimonrichard/HyperMD/edit/main',
+            : 'https://github.com/jsimonrichard/ProseMark/edit/main',
       },
     }),
   ],

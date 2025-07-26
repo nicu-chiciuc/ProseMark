@@ -1,13 +1,13 @@
-import { resolve } from "node:path";
-import { defineConfig } from "vite";
-import dts from "vite-plugin-dts";
-import { externalizeDeps } from "vite-plugin-externalize-deps";
+import { resolve } from 'node:path';
+import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
+import { externalizeDeps } from 'vite-plugin-externalize-deps';
 
 export default defineConfig({
   plugins: [
     externalizeDeps(),
     dts({
-      entryRoot: "lib",
+      entryRoot: 'lib',
     }),
   ],
   build: {
@@ -16,9 +16,9 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       // Could also be a dictionary or array of multiple entry points
-      entry: resolve(__dirname, "lib/main.ts"),
-      name: "HyperMD",
-      formats: ["es"],
+      entry: resolve(__dirname, 'lib/main.ts'),
+      name: 'ProseMark',
+      formats: ['es'],
       // the proper extensions will be added
       fileName: (_, entryName) => `${entryName}.mjs`,
     },

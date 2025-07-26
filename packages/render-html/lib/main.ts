@@ -1,5 +1,8 @@
 import { Decoration, EditorView, WidgetType } from '@codemirror/view';
-import {  foldableSyntaxFacet, selectAllDecorationsOnSelectExtension } from '@hypermd/core';
+import {
+  foldableSyntaxFacet,
+  selectAllDecorationsOnSelectExtension,
+} from '@prosemark/core';
 import type { EditorState } from '@codemirror/state';
 import DOMPurify from 'dompurify';
 import type { SyntaxNodeRef } from '@lezer/common';

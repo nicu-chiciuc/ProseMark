@@ -1,3 +1,3 @@
-# HyperMD
+# ProseMark
 
 Coming soon...
