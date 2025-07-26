@@ -4,7 +4,7 @@ A _"What You See Is What You Mean"_ editor like **Typora** or **Obsidian**, buil
 
 ## Features
 
-Basic formatting including _italics_, **bold text**, and `code spans`.
+Basic formatting including _italics_, **bold text**, `code spans`, and ~~strike throughs~~.
 
 ### Lists
 
@@ -33,11 +33,7 @@ Basic formatting including _italics_, **bold text**, and `code spans`.
 
 ```jsx
 export default function MyComponent() {
-  return (
-    <div style="text-align: center">
-      Some centered text
-    </div>
-  )
+  return <div style="text-align: center">Some centered text</div>;
 }
 ```
 

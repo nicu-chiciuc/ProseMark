@@ -18,8 +18,9 @@ export const themePlugin = EditorView.theme({
   '.cm-inline-code': {
     fontFamily: 'monospace',
     padding: '0.2rem',
-    backgroundColor: 'grey',
-    borderRadius: '0.2rem',
+    backgroundColor: '#ddd',
+    borderRadius: '0.4rem',
+    fontSize: '0.8rem',
   },
   '.cm-rendered-link': {
     textDecoration: 'underline',
@@ -90,6 +91,10 @@ export const syntaxHighlightPlugin = syntaxHighlighting(
     {
       tag: tags.strikethrough,
       textDecoration: 'line-through',
+    },
+    {
+      tag: markdownTags.inlineCode,
+      class: 'cm-inline-code',
     },
     {
       tag: markdownTags.linkURL,
