@@ -24,7 +24,7 @@ export const hideBlockDecoration = Decoration.replace({
 
 const buildDecorations = (state: EditorState) => {
   const decorations: Range<Decoration>[] = [];
-  const specs = state.facet(hidableSyntaxFacet);
+  const specs = state.facet(hidableNodeFacet);
   syntaxTree(state).iterate({
     enter: (node) => {
       // If the selection overlaps with the node, don't hide it
@@ -110,7 +110,7 @@ const hideExtension = StateField.define<DecorationSet>({
   provide: (f) => [EditorView.decorations.from(f), hideTheme],
 });
 
-export interface HidableSyntaxSpec {
+export interface HidableNodeSpec {
   nodeName: string | string[] | ((nodeName: string) => boolean);
   subNodeNameToHide?: string | string[];
   onHide?: (
@@ -121,11 +121,11 @@ export interface HidableSyntaxSpec {
   unhideZone?: (state: EditorState, node: SyntaxNodeRef) => RangeLike;
 }
 
-export const hidableSyntaxFacet = Facet.define<
-  HidableSyntaxSpec,
-  HidableSyntaxSpec[]
+export const hidableNodeFacet = Facet.define<
+  HidableNodeSpec,
+  HidableNodeSpec[]
 >({
-  combine(value: readonly HidableSyntaxSpec[]) {
+  combine(value: readonly HidableNodeSpec[]) {
     return [...value];
   },
   enables: hideExtension,

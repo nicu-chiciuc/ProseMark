@@ -1,6 +1,11 @@
 import { EditorView } from 'codemirror';
-import { syntaxTree } from '@codemirror/language';
+import {
+  HighlightStyle,
+  syntaxHighlighting,
+  syntaxTree,
+} from '@codemirror/language';
 import { eventHandlersWithClass, iterChildren } from './utils';
+import { markdownTags } from './markdownTags';
 
 function getUrlFromLink(view: EditorView, pos: number): string | undefined {
   const tree = syntaxTree(view.state);
@@ -66,6 +71,15 @@ const getRawUrl = (view: EditorView, pos: number): string | undefined => {
   return url;
 };
 
+const addClassToUrl = syntaxHighlighting(
+  HighlightStyle.define([
+    {
+      tag: markdownTags.linkURL,
+      class: 'cm-url', // needed for click event
+    },
+  ]),
+);
+
 const clickRawUrlExtension = EditorView.domEventHandlers(
   eventHandlersWithClass({
     mousedown: {
@@ -88,5 +102,6 @@ const clickRawUrlExtension = EditorView.domEventHandlers(
 
 export const clickLinkExtension = [
   clickFullLinkExtension,
+  addClassToUrl,
   clickRawUrlExtension,
 ];
