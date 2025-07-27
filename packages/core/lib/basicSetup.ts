@@ -1,8 +1,6 @@
 import { keymap, dropCursor, EditorView } from '@codemirror/view';
 import { type Extension } from '@codemirror/state';
 import {
-  defaultHighlightStyle,
-  syntaxHighlighting,
   indentOnInput,
   bracketMatching,
   foldGutter,
@@ -41,6 +39,7 @@ import {
   additionalMarkdownSyntaxTags,
   baseSyntaxHighlights,
   baseTheme,
+  generalSyntaxHighlights,
   lightTheme,
 } from './syntaxHighlighting';
 
@@ -64,7 +63,6 @@ export const prosemarkBasicSetup = (): Extension => [
   history(),
   dropCursor(),
   indentOnInput(),
-  syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
   bracketMatching(),
   closeBrackets(),
   autocompletion(),
@@ -90,6 +88,7 @@ export const prosemarkBasicSetup = (): Extension => [
 
 export const prosemarkBaseThemeSetup = (): Extension => [
   baseSyntaxHighlights,
+  generalSyntaxHighlights,
   baseTheme,
   codeFenceTheme,
 ];
