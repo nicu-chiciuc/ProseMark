@@ -5,8 +5,9 @@ import { EditorView, keymap } from '@codemirror/view';
 import { markdown } from '@codemirror/lang-markdown';
 import { languages } from '@codemirror/language-data';
 import {
-  prosemarkExtensions,
-  prosemarkMarkdownExtensions,
+  prosemarkBasicSetup,
+  prosemarkBaseThemeSetup,
+  prosemarkMarkdownSyntaxExtensions,
 } from '@prosemark/core';
 import * as ProseMark from '@prosemark/core';
 import { htmlBlockExtension } from '@prosemark/render-html';
@@ -32,12 +33,11 @@ const editor = new EditorView({
     basicSetup,
     markdown({
       codeLanguages: languages,
-      extensions: [GFM, prosemarkMarkdownExtensions],
+      extensions: [GFM, prosemarkMarkdownSyntaxExtensions],
     }),
     EditorView.lineWrapping,
-    prosemarkExtensions,
-    htmlBlockExtension,
-    syntaxHighlighting(defaultHighlightStyle),
+    prosemarkBasicSetup(),
+    prosemarkBaseThemeSetup(),
     keymap.of([
       indentWithTab,
       {
