@@ -1,5 +1,3 @@
-# ProseMark Demo Page
-
 A _"What You See Is What You Mean"_ editor like **Typora** or **Obsidian**, built on top of [**CodeMirror 6**](https://codemirror.net/).
 
 ## Features

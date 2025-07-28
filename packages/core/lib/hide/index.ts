@@ -1,18 +1,18 @@
 import { Decoration } from '@codemirror/view';
 import {
-  type HidableSyntaxSpec,
-  hidableSyntaxFacet,
+  type HidableNodeSpec,
+  hidableNodeFacet,
   hideInlineDecoration,
 } from './core';
 import type { InlineContext, MarkdownConfig } from '@lezer/markdown';
 import { markdownTags } from '../markdownTags';
 import { stateWORDAt } from '../utils';
 
-export const renderedLinkDecoration = Decoration.mark({
+const renderedLinkDecoration = Decoration.mark({
   class: 'cm-rendered-link',
 });
 
-const defaultHidableSpecs: HidableSyntaxSpec[] = [
+const defaultHidableSpecs: HidableNodeSpec[] = [
   {
     nodeName: (name) => name.startsWith('ATXHeading'),
     onHide: (_view, node) => {
@@ -67,11 +67,11 @@ const defaultHidableSpecs: HidableSyntaxSpec[] = [
   },
 ];
 
-export const defaultHidableSyntaxExtensions = defaultHidableSpecs.map((spec) =>
-  hidableSyntaxFacet.of(spec),
+export const defaultHideExtensions = defaultHidableSpecs.map((spec) =>
+  hidableNodeFacet.of(spec),
 );
 
-export const escapeMarkdownExtension: MarkdownConfig = {
+export const escapeMarkdownSyntaxExtension: MarkdownConfig = {
   defineNodes: [
     {
       name: 'EscapeMark',

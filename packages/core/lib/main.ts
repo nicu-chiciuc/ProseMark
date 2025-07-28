@@ -1,39 +1,10 @@
-import {
-  defaultHidableSyntaxExtensions,
-  escapeMarkdownExtension,
-} from './hide';
-import { emojiMarkdownExtension } from './fold/emoji';
-import { defaultFoldableSyntaxExtensions } from './fold';
-import {
-  additionalMarkdownSyntaxTags,
-  syntaxHighlightPlugin,
-  themePlugin,
-} from './syntaxHighlighting';
-import { clickLinkExtension } from './clickLink';
-import {
-  codeBlockDecorationsExtension,
-  codeFenceTheme,
-} from './codeFenceExtension';
+export * from './hide';
+export * from './fold';
+export * from './syntaxHighlighting';
+export * from './markdownTags';
+export * from './clickLink';
+export * from './codeFenceExtension';
 
-export {
-  foldDecorationExtension,
-  foldableSyntaxFacet,
-  selectAllDecorationsOnSelectExtension,
-} from './fold/core';
+export * from './basicSetup';
+
 export { eventHandlersWithClass } from './utils';
-
-export const prosemarkMarkdownExtensions = [
-  additionalMarkdownSyntaxTags,
-  escapeMarkdownExtension,
-  emojiMarkdownExtension,
-];
-
-export const prosemarkExtensions = [
-  themePlugin,
-  syntaxHighlightPlugin,
-  defaultHidableSyntaxExtensions,
-  defaultFoldableSyntaxExtensions,
-  clickLinkExtension,
-  codeBlockDecorationsExtension,
-  codeFenceTheme,
-];

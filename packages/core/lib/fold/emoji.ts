@@ -6,7 +6,7 @@ import * as emoji from 'node-emoji';
 
 const emojiDelimiter = { resolve: 'Emoji', mark: 'EmojiMark' };
 
-export const emojiMarkdownExtension: MarkdownConfig = {
+export const emojiMarkdownSyntaxExtension: MarkdownConfig = {
   defineNodes: [
     {
       name: 'Emoji',
