@@ -35,17 +35,17 @@
       prosemarkBasicSetup(),
       prosemarkBaseThemeSetup(),
       htmlBlockExtension,
-      // keymap.of([
-      //   {
-      //     key: 'Alt-p',
-      //     run: (view) => {
-      //       console.log(
-      //         printTree(syntaxTree(view.state), view.state.doc.toString()),
-      //       );
-      //       return true;
-      //     },
-      //   },
-      // ]),
+      keymap.of([
+        {
+          key: 'Alt-p',
+          run: (view) => {
+            console.log(
+              printTree(syntaxTree(view.state), view.state.doc.toString()),
+            );
+            return true;
+          },
+        },
+      ]),
     ],
     doc: initDoc,
     parent: document.getElementById('codemirror-container')!,

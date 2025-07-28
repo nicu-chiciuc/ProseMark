@@ -13,12 +13,20 @@ import { type Extension } from '@codemirror/state';
 const codeBlockDecorations = (view: EditorView) => {
   const builder = new RangeSetBuilder<Decoration>();
 
+  // If there are multiple visible ranges, it's possible to see
+  // the same code block multiple times
+  const visited = new Set<string>();
+
   for (const { from, to } of view.visibleRanges) {
     syntaxTree(view.state).iterate({
       from,
       to,
       enter: (node) => {
         if (node.name === 'FencedCode') {
+          const key = JSON.stringify([node.from, node.to]);
+          if (visited.has(key)) return;
+          visited.add(key);
+
           let lang = '';
           const codeInfoNode = node.node.getChild('CodeInfo');
           if (codeInfoNode) {
