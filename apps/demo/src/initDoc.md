@@ -42,3 +42,7 @@ export default function MyComponent() {
 <div style="text-align: center">
   Some centered text
 </div>
+
+## Credits
+
+Made by Simon Richard (https://jsimonrichard.com)

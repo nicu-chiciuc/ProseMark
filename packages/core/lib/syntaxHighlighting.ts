@@ -72,6 +72,12 @@ export const baseSyntaxHighlights = syntaxHighlighting(
       fontSize: '0.8rem',
       backgroundColor: 'var(--pm-code-background-color)',
     },
+    {
+      tag: markdownTags.linkURL,
+      color: 'var(--pm-link-color)',
+      textDecoration: 'underline',
+      cursor: 'pointer',
+    },
   ]),
 );
 
